@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#05070c">
 <title>ASTRA TOMBALA OS · Canlı Takip, Senkron & Görünüm Düzenleme</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='50' rx='46' ry='20' fill='none' stroke='%2300f0ff' stroke-width='4' transform='rotate(-28 50 50)'/%3E%3Ccircle cx='50' cy='50' r='36' fill='%23ffbd00' stroke='%23c48200' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='20' fill='%23ffffff'/%3E%3Ctext x='50' y='58' font-family='monospace' font-size='20' font-weight='900' fill='%230b1120' text-anchor='middle'%3E88%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -366,7 +367,24 @@ body.altlayout #boardCol .bn{height:26px;font-size:12px;border-radius:5px}
 </div>
 
 <header>
-  <div class="logo" onclick="openCustomizer()" title="Görünüm ve Temayı Düzenle">ASTRA <b>TOMBALA</b><small>WIFI SYNC & OS</small></div>
+  <div class="logo" onclick="openCustomizer()" title="Görünüm ve Temayı Düzenle">
+    <div style="display:flex;align-items:center;gap:7px">
+      <svg class="header-logo" width="30" height="30" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="logoBgGrad" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ffe680"/>
+            <stop offset="45%" stop-color="#ffbd00"/>
+            <stop offset="100%" stop-color="#c48200"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="50" cy="50" rx="46" ry="20" fill="none" stroke="#00f0ff" stroke-width="4" transform="rotate(-28 50 50)"/>
+        <circle cx="50" cy="50" r="36" fill="url(#logoBgGrad)" stroke="#ffbd00" stroke-width="2"/>
+        <circle cx="50" cy="50" r="20" fill="#ffffff"/>
+        <text x="50" y="58" font-family="'JetBrains Mono',monospace" font-size="20" font-weight="900" fill="#0b1120" text-anchor="middle">88</text>
+      </svg>
+      <div>ASTRA <b>TOMBALA</b><small>WIFI SYNC &amp; OS</small></div>
+    </div>
+  </div>
   <div class="badge-pill wifi" id="wifiStatusPill" onclick="openWifiModal()" title="Wi-Fi Erişim Noktası ve Canlı Senkronizasyon">
     <span class="dot"></span><span id="wifiPillText">Wi-Fi</span>
   </div>
@@ -932,7 +950,13 @@ function checkNear(){
     const bar = document.getElementById('nearBar');
     bar.innerHTML = '⚠️ ' + msgs.join(' · ');
     bar.classList.add('show');
-    vibrate([120, 60, 120, 60, 150]);
+    
+    // Arkadaş kartları için titreşim verilmez; yalnızca benim kartlarımda 1 kaldıysa titreşim ver:
+    const hasMyNear = cards.some(c=>c.owner!=='friend' && eligible(c) && needForTarget(c, TARGET).miss.length===1);
+    if(hasMyNear){
+      vibrate([120, 60, 120, 60, 150]);
+    }
+
     tone(660, 0, .15, .3); tone(660, .2, .15, .3);
     speak(msgs.join('. '));
     clearTimeout(bar._tm);
@@ -972,10 +996,16 @@ function callNumber(n, silent){
   called.add(n); history.push(n); callTimes.push(Date.now()); lastMark = n;
   
   const hitCards = cards.filter(c=>allCardNums(c).includes(n));
+  const myHits = hitCards.filter(c=>c.owner!=='friend');
   logAnn(n, hitCards.map(c=>c.no + ' (' + ownerLabel(c) + ')'));
   document.getElementById('lastNum').textContent = n;
   
-  vibrate(hitCards.length ? [80, 50, 80, 50, 120] : 30);
+  // ARKADAŞ KARTINDA OLAN EŞLEŞMELER TİTREŞİM VERMESİN:
+  // Yalnızca kullanıcının kendi kartlarında eşleşme olduğunda titreşim tetiklenir:
+  if(myHits.length > 0){
+    vibrate([80, 50, 80, 50, 120]);
+  }
+  
   beep(hitCards.length > 0);
   showFlash(n, hitCards);
   speakHit(n, hitCards);
