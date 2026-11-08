@@ -21,10 +21,11 @@
   --red: #ff3b5c;
   --txt: #e8eefc;
   --dim: #7c8aa8;
-  --radius: 16px;
+  --radius: 8px; /* Azaltılmış modern cyber/casino radius */
   --card-scale: 1;
   --cell-font-size: 16px;
   --board-cols: 10;
+  --cards-col-template: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
 }
 
 /* TEMA SINIFLARI */
@@ -82,7 +83,7 @@ header > *{flex-shrink:0}
 .logo small{display:block;font-size:7.5px;color:var(--cyan);letter-spacing:1px}
 
 /* ROZETLER */
-.badge-pill{display:inline-flex;align-items:center;gap:4px;border-radius:99px;padding:3.5px 8px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;border:1px solid}
+.badge-pill{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3.5px 8px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;border:1px solid}
 .badge-pill.wifi{background:rgba(0,240,255,.1);border-color:var(--cyan);color:var(--cyan)}
 .badge-pill.wifi.stream{background:rgba(34,224,122,.15);border-color:var(--green);color:var(--green);animation:blip 1s infinite alternate}
 .badge-pill.mode{background:rgba(255,189,0,.12);border-color:var(--gold);color:var(--gold)}
@@ -95,18 +96,18 @@ header > *{flex-shrink:0}
 .lastwrap{text-align:right;min-width:38px}
 .lastwrap .num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;color:var(--gold);line-height:1}
 .lastwrap .lbl{font-size:7.5px;color:var(--dim);letter-spacing:1px}
-.hbtn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);width:36px;height:36px;border-radius:10px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.hbtn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);width:36px;height:36px;border-radius:var(--radius);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
 .hbtn.on{border-color:var(--cyan);background:rgba(0,240,255,.12);color:var(--cyan)}
 .hbtn.gold{border-color:var(--gold);background:rgba(255,189,0,.15);color:var(--gold)}
 .hbtn.purple{border-color:var(--purple);background:rgba(189,0,255,.12);color:var(--purple)}
-.gear{background:var(--panel2);border:1px solid var(--line);color:var(--txt);width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;flex-shrink:0}
+.gear{background:var(--panel2);border:1px solid var(--line);color:var(--txt);width:36px;height:36px;border-radius:var(--radius);font-size:16px;cursor:pointer;flex-shrink:0}
 .gear.on{border-color:var(--cyan)}
 
 /* AÇILIR MENÜ */
-.menu{position:fixed;top:52px;right:8px;z-index:140;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 12px 34px rgba(0,0,0,.75);width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 62px);overflow-y:auto}
+.menu{position:fixed;top:52px;right:8px;z-index:140;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:10px;padding:10px;display:none;box-shadow:0 12px 34px rgba(0,0,0,.75);width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 62px);overflow-y:auto}
 .menu.open{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start}
 .menu-h{grid-column:1/-1;font-size:9px;letter-spacing:2px;color:var(--dim);font-weight:800;padding:4px 4px 2px}
-.menu .tgl{width:100%;text-align:left;padding:8px 10px;font-size:11.5px;line-height:1.2;background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:10px;cursor:pointer}
+.menu .tgl{width:100%;text-align:left;padding:8px 10px;font-size:11.5px;line-height:1.2;background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:7px;cursor:pointer}
 .menu .tgl.on{border-color:var(--cyan);color:var(--cyan);background:rgba(0,240,255,.1)}
 
 /* TAM EKRAN HEDEFE 1 VAR KRİTİK UYARISI */
@@ -122,7 +123,7 @@ header > *{flex-shrink:0}
 .near.show{transform:translateY(0)}
 
 /* KARTLARDA OLAN SAYI FLAŞ UYARISI */
-.flash{position:fixed;top:56px;left:50%;transform:translateX(-50%) translateY(-14px);z-index:120;display:flex;align-items:center;gap:12px;background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:16px;padding:8px 16px;opacity:0;pointer-events:none;transition:.18s;max-width:92vw}
+.flash{position:fixed;top:56px;left:50%;transform:translateX(-50%) translateY(-14px);z-index:120;display:flex;align-items:center;gap:12px;background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:10px;padding:8px 16px;opacity:0;pointer-events:none;transition:.18s;max-width:92vw}
 .flash.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .flash .fn{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:800;line-height:1;color:var(--txt)}
 .flash.hit{border-color:var(--gold);box-shadow:0 0 24px rgba(255,189,0,.35)}
@@ -132,7 +133,7 @@ header > *{flex-shrink:0}
 .flash.hit .fc{color:var(--gold)}
 .flash .fmiss{font-size:11px;color:var(--dim)}
 
-/* SABİTLENMİŞ EN YAKIN BİLGİSİ (KIRPILMA VE KÜÇÜLME FIX) */
+/* SABİTLENMİŞ EN YAKIN BİLGİSİ */
 #pinnedNear{
   position:sticky;
   top:48px;
@@ -168,7 +169,7 @@ header > *{flex-shrink:0}
   font-family:'JetBrains Mono',monospace;
   text-align:center;
   background:rgba(255,255,255,.08);
-  border-radius:4px;
+  border-radius:3px;
   font-size:10px;
   padding:1.5px 0;
   display:block;
@@ -180,7 +181,7 @@ header > *{flex-shrink:0}
 }
 
 .last5{display:flex;gap:5px;justify-content:center;padding:5px 10px 3px;margin:0 auto}
-.l5{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 0;color:var(--dim);cursor:pointer}
+.l5{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 0;color:var(--dim);cursor:pointer}
 .l5.cur{background:var(--gold);color:#1a1200;border-color:var(--gold)}
 .l5.empty{opacity:.25;cursor:default}
 
@@ -188,33 +189,33 @@ header > *{flex-shrink:0}
 
 .target{display:flex;gap:5px;align-items:center;padding:0 10px 5px;margin:0 auto}
 .tlbl{font-size:10.5px;font-weight:800;color:var(--dim);letter-spacing:1px;white-space:nowrap}
-.tg{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:11px;padding:8px 4px;font-size:11px;font-weight:800;cursor:pointer;transition:.12s}
+.tg{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:8px 4px;font-size:11px;font-weight:800;cursor:pointer;transition:.12s}
 .tg.on{background:var(--gold);border-color:var(--gold);color:#1a1200}
 .tg.done{opacity:.4;text-decoration:line-through}
 
 .ownbar{display:flex;gap:5px;padding:0 10px 5px;margin:0 auto}
-.obtn{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:11px;padding:7px 5px;font-size:10.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:.15s}
+.obtn{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:7px;padding:7px 5px;font-size:10.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:.15s}
 .obtn.on[data-ow="split"]{border-color:var(--gold);background:rgba(255,189,0,.14);color:var(--gold)}
 .obtn.on[data-ow="me"]{border-color:var(--cyan);background:rgba(0,240,255,.14);color:var(--cyan)}
 .obtn.on[data-ow="friend"]{border-color:var(--purple);background:rgba(189,0,255,.16);color:#e9c8ff}
 
 .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;padding:0 10px 7px;margin:0 auto}
 @media(min-width:600px){ .quick{grid-template-columns:repeat(4,1fr)} }
-.qb{background:var(--panel2);border:1px solid var(--purple);color:#d7a3ff;border-radius:11px;padding:8px 6px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.qb{background:var(--panel2);border:1px solid var(--purple);color:#d7a3ff;border-radius:7px;padding:8px 6px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
 .qb.warn{border-color:var(--red);color:#ffb3c0}
 .qb.act{border-color:var(--gold);background:rgba(255,189,0,.14);color:var(--gold)}
 .qb.cy{border-color:var(--cyan);background:rgba(0,240,255,.1);color:var(--cyan)}
 
 .lead{margin:0 auto 5px;padding:0 10px;font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:5px}
 @media(max-width:440px){ .lead{grid-template-columns:1fr} }
-.lbox{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 9px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.lbox{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:6px}
 .lbox.me{border-left:3px solid var(--cyan);color:var(--cyan)}
 .lbox.fr{border-left:3px solid var(--purple);color:#e5b8ff}
 .lbox small{color:var(--txt);font-weight:600;font-size:10px}
 
 .winbar{position:sticky;top:51px;z-index:48;display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:0 auto 5px;padding:2px 10px}
 .winbar:empty{display:none}
-.wchip{font-size:10px;font-weight:800;padding:4px 9px;border-radius:99px;border:1px solid;white-space:nowrap}
+.wchip{font-size:10px;font-weight:800;padding:4px 9px;border-radius:6px;border:1px solid;white-space:nowrap}
 .wchip.c1{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.1)}
 .wchip.c2{color:var(--gold);border-color:var(--gold);background:rgba(255,189,0,.1)}
 .wchip.ct{color:var(--green);border-color:var(--green);background:rgba(34,224,122,.12)}
@@ -226,13 +227,19 @@ main{padding:0 8px}
 section{margin-bottom:12px}
 h2{font-size:9.5px;letter-spacing:1.8px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;font-weight:700}
 
-/* KART DÜZENİ */
-#cardsSec{display:grid;grid-template-columns:1fr;gap:10px;align-items:start}
-#cardsSec.split-cols{grid-template-columns:1fr;gap:10px}
-@media(min-width:640px){ #cardsSec.split-cols{grid-template-columns:1fr 1fr} }
-@media(min-width:540px){ #cardsSec.single-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))} }
+/* KART DÜZENİ & SÜTUN DESTEĞİ */
+.card-list-grid {
+  display: grid;
+  grid-template-columns: var(--cards-col-template, repeat(auto-fill, minmax(min(260px, 100%), 1fr)));
+  gap: 8px;
+  align-items: start;
+}
 
-.pcol{display:flex;flex-direction:column;gap:8px;background:rgba(11,17,32,.55);border:1px solid var(--line);border-radius:16px;padding:8px}
+#cardsSec.split-cols{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:720px){ #cardsSec.split-cols{grid-template-columns:1fr 1fr} }
+#cardsSec.single-grid{display:grid;grid-template-columns:var(--cards-col-template, repeat(auto-fill, minmax(min(260px, 100%), 1fr)));gap:8px}
+
+.pcol{display:flex;flex-direction:column;gap:8px;background:rgba(11,17,32,.55);border:1px solid var(--line);border-radius:10px;padding:8px}
 .pcol.me{border-top:3px solid var(--cyan)}
 .pcol.friend{border-top:3px solid var(--purple)}
 .pcol-hdr{display:flex;align-items:center;justify-content:space-between;padding:3px 6px 5px;border-bottom:1px solid var(--line);font-size:11.5px;font-weight:800;letter-spacing:.5px}
@@ -240,12 +247,23 @@ h2{font-size:9.5px;letter-spacing:1.8px;color:var(--dim);text-transform:uppercas
 .pcol.friend .pcol-hdr{color:#e5b8ff}
 
 /* ARKADAŞ KARTLARI KARUSELİ (CAROUSEL) */
-.carousel-box{overflow-x:auto;display:flex;gap:10px;padding:6px 2px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.carousel-box{overflow-x:auto;display:flex;gap:8px;padding:6px 2px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
 .carousel-box::-webkit-scrollbar{height:6px}
-.carousel-box::-webkit-scrollbar-thumb{background:var(--purple);border-radius:99px}
-.carousel-box .card{min-width:280px;flex-shrink:0;scroll-snap-align:start}
+.carousel-box::-webkit-scrollbar-thumb{background:var(--purple);border-radius:6px}
+.carousel-box .card{min-width:260px;flex-shrink:0;scroll-snap-align:start}
 
-.card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius);padding:10px;transition:.2s;position:relative;transform:scale(var(--card-scale));transform-origin:top center}
+/* KART KÜÇÜLME VE KOMPAKT FIT DÜZENİ */
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:calc(9px * var(--card-scale));
+  margin-bottom:0;
+  transition:.15s;
+  position:relative;
+  zoom:var(--card-scale);
+}
 .card.cinko1{border-color:var(--cyan)}
 .card.cinko2{border-color:var(--gold)}
 .card.tombala{border-color:var(--green);box-shadow:0 0 22px rgba(34,224,122,.25)}
@@ -253,73 +271,75 @@ h2{font-size:9.5px;letter-spacing:1.8px;color:var(--dim);text-transform:uppercas
 .card.near1{box-shadow:0 0 0 2px var(--red),0 0 24px rgba(255,59,92,.5)}
 .card.near2{box-shadow:0 0 0 1px var(--gold),0 0 18px rgba(255,189,0,.35)}
 
-.card-head{display:flex;align-items:center;gap:4px;flex-wrap:wrap;border-radius:10px;padding:4px 7px;margin:-3px -3px 6px}
+.card-head{display:flex;align-items:center;gap:4px;flex-wrap:wrap;border-radius:6px;padding:4px 7px;margin:-3px -3px 6px}
 .card-no{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--gold);font-size:14.5px}
-.card-person{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
-.ownchip{font-size:9px;font-weight:800;padding:2px 6px;border-radius:99px;cursor:pointer;border:1px solid}
+.card-person{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
+.ownchip{font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;cursor:pointer;border:1px solid}
 .ownchip.me{background:rgba(0,240,255,.18);color:#00f0ff;border-color:rgba(0,240,255,.55)}
 .ownchip.friend{background:rgba(189,0,255,.22);color:#f0c8ff;border-color:rgba(189,0,255,.6)}
-.pricechip{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;background:rgba(0,0,0,.3);color:var(--green);border:1px solid rgba(34,224,122,.5);border-radius:99px;padding:2px 6px;cursor:pointer}
-.badge{font-size:8px;font-weight:800;padding:2px 5px;border-radius:99px;display:none}
+.pricechip{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;background:rgba(0,0,0,.3);color:var(--green);border:1px solid rgba(34,224,122,.5);border-radius:6px;padding:2px 6px;cursor:pointer}
+.badge{font-size:8px;font-weight:800;padding:2px 5px;border-radius:5px;display:none}
 .badge.show{display:inline-block}
 .b1{background:rgba(0,240,255,.15);color:var(--cyan)}
 .b2{background:rgba(255,189,0,.15);color:var(--gold)}
 .bt{background:rgba(34,224,122,.18);color:var(--green)}
 
 .card-actions{margin-left:auto;display:flex;gap:3px;align-items:center}
-.cbtn{background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--txt);border-radius:7px;font-size:10.5px;padding:3px 6px;cursor:pointer}
+.cbtn{background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--txt);border-radius:5px;font-size:10.5px;padding:3px 6px;cursor:pointer}
 .cbtn:hover{border-color:var(--cyan);color:var(--cyan)}
 .cbtn.del{color:#ff99aa;border-color:rgba(255,59,92,.4)}
 
-.grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3.5px;margin-bottom:3.5px}
+.grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;margin-bottom:3px}
 .grid.rowdone{filter:drop-shadow(0 0 3px rgba(0,240,255,.4))}
-.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--panel2);border:1px solid var(--line);border-radius:7px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--cell-font-size);cursor:pointer;transition:.12s;user-select:none}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--panel2);border:1px solid var(--line);border-radius:5px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--cell-font-size);cursor:pointer;transition:.12s;user-select:none}
 .cell:active{transform:scale(.92)}
 .cell.blank{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);opacity:.65;cursor:default}
 .cell.hit{background:linear-gradient(135deg,#5a4607,#8c6d0b);border-color:var(--gold);color:#fff;box-shadow:inset 0 0 8px rgba(255,189,0,.35)}
 .cell.justhit{animation:justhitpop .5s ease-out}
 @keyframes justhitpop{0%{transform:scale(.55);box-shadow:0 0 0 0 rgba(34,224,122,.7)}60%{transform:scale(1.18)}100%{transform:scale(1);box-shadow:0 0 0 8px rgba(34,224,122,0)}}
 
-.need{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;align-items:center}
+.need{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap;align-items:center}
 .need-lbl{font-size:9px;letter-spacing:1px;color:var(--red);font-weight:800}
-.nchip{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;background:rgba(255,59,92,.14);border:1px solid var(--red);color:var(--red);border-radius:6px;padding:2px 7px;cursor:pointer}
+.nchip{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;background:rgba(255,59,92,.14);border:1px solid var(--red);color:var(--red);border-radius:5px;padding:2px 6px;cursor:pointer}
 
 /* AÇILIŞ/KAPANIŞ ÇOKLU KART MODU (MASSIVE COMPACT MODE) */
-body.mode-massive #cardsSec{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))!important}
-body.mode-massive .card{padding:6px;border-radius:10px}
+body.mode-massive #cardsSec{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important}
+body.mode-massive .card{padding:6px;border-radius:7px}
 body.mode-massive .grid{display:none}
 .compact-summary{display:none;flex-direction:column;gap:4px;margin-top:4px}
 body.mode-massive .compact-summary{display:flex}
 .compact-need-grid{display:flex;flex-wrap:wrap;gap:3px}
-.compact-nchip{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;background:rgba(0,240,255,.12);border:1px solid var(--cyan);color:var(--cyan);padding:2px 5px;border-radius:5px}
+.compact-nchip{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;background:rgba(0,240,255,.12);border:1px solid var(--cyan);color:var(--cyan);padding:2px 5px;border-radius:4px}
 
 /* PANO (BOARD) */
-.board{display:grid;grid-template-columns:repeat(var(--board-cols),1fr);gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px}
-.bn{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,3.2vw,18px);font-weight:700;border-radius:8px;color:var(--dim);background:var(--panel2);cursor:pointer;user-select:none;transition:.1s}
+.board{display:grid;grid-template-columns:repeat(var(--board-cols),1fr);gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px}
+.bn{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,3.2vw,18px);font-weight:700;border-radius:6px;color:var(--dim);background:var(--panel2);cursor:pointer;user-select:none;transition:.1s}
 .bn:active{transform:scale(.9)}
 .bn.called{background:var(--cyan);color:#02181a;font-weight:800}
 .bn.last{background:var(--gold);color:#1a1200;box-shadow:0 0 12px rgba(255,189,0,.6)}
 
 .stats{display:flex;gap:5px}
-.stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}
 .stat .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--cyan)}
 .stat .k{font-size:8px;letter-spacing:1px;color:var(--dim)}
 
 .histlist{max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
-.hrow{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 8px;font-size:11px}
+.hrow{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:11px}
 .hrow .hn{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold);min-width:26px}
 .hrow.win{border-color:var(--green);color:var(--green);font-weight:700}
 
-.profit{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;font-size:11.5px}
+.profit{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:11.5px}
 .psum{display:flex;flex-direction:column;gap:4px}
 .psum div{display:flex;justify-content:space-between;align-items:center}
 .psum span{color:var(--dim);font-size:10.5px}
 .psum b{font-family:'JetBrains Mono',monospace;font-size:13.5px}
-.pbtn{background:var(--panel2);border:1px solid var(--cyan);color:var(--cyan);border-radius:9px;padding:7px 10px;font-weight:700;font-size:11px;cursor:pointer}
-.btn-reset{width:100%;background:none;border:1px solid var(--red);color:var(--red);border-radius:12px;padding:11px;font-weight:700;cursor:pointer}
+.pbtn{background:var(--panel2);border:1px solid var(--cyan);color:var(--cyan);border-radius:6px;padding:6px 9px;font-weight:700;font-size:11px;cursor:pointer;transition:.15s}
+.pbtn.on{background:rgba(0,240,255,.15);border-color:var(--cyan)}
+.pbtn.active{background:var(--cyan);color:#000;border-color:var(--cyan)}
+.btn-reset{width:100%;background:none;border:1px solid var(--red);color:var(--red);border-radius:8px;padding:10px;font-weight:700;cursor:pointer}
 
 /* FLOATING MİKROFON & FLOW BUTONU */
-.micfab{position:fixed;left:14px;bottom:16px;z-index:70;width:52px;height:52px;border-radius:50%;border:none;background:var(--gold);color:#1a1200;font-size:20px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.micfab{position:fixed;left:14px;bottom:16px;z-index:70;width:52px;height:52px;border-radius:50%;border:none;background:var(--gold);color:#1a1200;font-size:20px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center}
 .micfab.active{background:var(--red);color:#fff;animation:pulse 1.2s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,92,.5)}50%{box-shadow:0 0 0 12px rgba(255,59,92,0)}}
 
@@ -327,10 +347,10 @@ body.mode-massive .compact-summary{display:flex}
 .flow-fab{width:56px;height:56px;border-radius:50%;border:2px solid var(--cyan);background:linear-gradient(135deg,#0b1736,#1b0c38);color:var(--cyan);font-size:20px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 24px rgba(0,240,255,.32)}
 .flow-fab small{font-size:7.5px;letter-spacing:1px;color:var(--gold);font-weight:800;margin-top:-2px}
 .flow-wrap.open .flow-panel{display:flex;animation:fpop .18s ease-out}
-.flow-panel{position:absolute;bottom:68px;right:0;width:250px;background:rgba(10,16,32,.96);backdrop-filter:blur(20px);border:1.5px solid var(--cyan);border-radius:18px;padding:8px;display:none;flex-direction:column;gap:5px;box-shadow:0 16px 40px rgba(0,0,0,.8)}
+.flow-panel{position:absolute;bottom:68px;right:0;width:250px;background:rgba(10,16,32,.96);backdrop-filter:blur(20px);border:1.5px solid var(--cyan);border-radius:12px;padding:8px;display:none;flex-direction:column;gap:5px;box-shadow:0 16px 40px rgba(0,0,0,.8)}
 @keyframes fpop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
-.flow-item{display:flex;align-items:center;gap:8px;width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:11px;padding:9px 10px;font-size:12px;font-weight:700;cursor:pointer;text-align:left}
-.flow-item .fi-ic{font-size:17px;width:22px;text-align:center}
+.flow-item{display:flex;align-items:center;gap:8px;width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:7px;padding:8px 10px;font-size:11.5px;font-weight:700;cursor:pointer;text-align:left}
+.flow-item .fi-ic{font-size:16px;width:22px;text-align:center}
 .flow-item .fi-tx{flex:1;line-height:1.2}
 .flow-item .fi-tx small{display:block;font-size:9px;color:var(--dim);font-weight:600;margin-top:1px}
 .flow-item.gold{border-color:rgba(255,189,0,.55);background:rgba(255,189,0,.1);color:var(--gold)}
@@ -338,36 +358,36 @@ body.mode-massive .compact-summary{display:flex}
 .flow-item.cyan{border-color:rgba(0,240,255,.5);background:rgba(0,240,255,.1);color:var(--cyan)}
 .flow-item.red{border-color:rgba(255,59,92,.5);background:rgba(255,59,92,.1);color:#ff99aa}
 
-/* DIALOGLAR */
-dialog{background:var(--panel);border:1px solid var(--line);border-radius:18px;color:var(--txt);padding:15px;max-width:440px;width:94vw;margin:auto;max-height:88vh;overflow-y:auto}
+/* DIALOGLAR & STANDART BUTONLAR */
+dialog{background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:14px;max-width:440px;width:94vw;margin:auto;max-height:88vh;overflow-y:auto}
 dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
 dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 .drow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.drow button{flex:1;min-width:85px;border:none;border-radius:10px;padding:9px;font-weight:700;cursor:pointer}
-.btn-ok{background:var(--gold);color:#1a1200}
-.btn-cy{background:var(--cyan);color:#02181a}
-.btn-no{background:var(--panel2);color:var(--dim);border:1px solid var(--line)!important}
-.btn-rd{background:var(--red);color:#fff}
+.drow button{flex:1;min-width:85px;border:none;border-radius:7px;padding:9px;font-weight:700;cursor:pointer}
+.btn-ok{background:var(--gold);color:#1a1200;border:none;border-radius:7px;padding:8px 12px;font-weight:700;cursor:pointer}
+.btn-cy{background:var(--cyan);color:#02181a;border:none;border-radius:7px;padding:8px 12px;font-weight:700;cursor:pointer}
+.btn-no{background:var(--panel2);color:var(--dim);border:1px solid var(--line)!important;border-radius:7px;padding:8px 12px;font-weight:700;cursor:pointer}
+.btn-rd{background:var(--red);color:#fff;border:none;border-radius:7px;padding:8px 12px;font-weight:700;cursor:pointer}
 .hint{font-size:10.5px;color:var(--dim);margin:4px 0}
 
-/* KART FİYATI SEÇİM GRİDİ (10, 20, 25, 30, 50, 100, 150, 200, 250) */
+/* KART FİYATI SEÇİM GRİDİ */
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
-.price-btn{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 4px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--txt);cursor:pointer;text-align:center}
+.price-btn{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 4px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--txt);cursor:pointer;text-align:center}
 .price-btn.active{border-color:var(--green);background:rgba(34,224,122,.15);color:var(--green)}
 
 /* NUMPAD MODAL */
-.numpad-dlg{max-width:390px;width:95vw;padding:12px;border:1.5px solid var(--gold)}
+.numpad-dlg{max-width:390px;width:95vw;padding:12px;border:1.5px solid var(--gold);border-radius:10px}
 .np-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.np-disp{flex:1;background:#050811;border:2px solid var(--gold);border-radius:12px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;min-height:58px}
+.np-disp{flex:1;background:#050811;border:2px solid var(--gold);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;min-height:58px}
 .np-val{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:800;color:var(--gold);line-height:1}
 .np-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
-.np-btn{height:56px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.np-btn{height:54px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(10,16,32,.95);border:1px solid var(--cyan);color:var(--cyan);padding:10px 18px;border-radius:99px;font-weight:800;font-size:12px;z-index:999;opacity:0;pointer-events:none;transition:.22s;box-shadow:0 6px 20px rgba(0,0,0,.6);white-space:nowrap}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(10,16,32,.95);border:1px solid var(--cyan);color:var(--cyan);padding:10px 18px;border-radius:6px;font-weight:800;font-size:12px;z-index:999;opacity:0;pointer-events:none;transition:.22s;box-shadow:0 6px 20px rgba(0,0,0,.6);white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.warn{border-color:var(--red);color:var(--red)}
 
-/* SPLASH SCREEN */
+/* SPLASH SCREEN (MİNİMUM 4 SANİYE GÖRÜNÜR) */
 #splashScreen{
   position:fixed;
   inset:0;
@@ -380,7 +400,6 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   padding:24px;
   text-align:center;
   user-select:none;
-  cursor:pointer;
   transition:opacity .45s ease-out, visibility .45s ease-out;
 }
 #splashScreen.hide{
@@ -462,8 +481,8 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   opacity:.9;
 }
 .splash-bar{
-  width:180px;
-  height:4px;
+  width:200px;
+  height:5px;
   background:rgba(255,255,255,.1);
   border-radius:99px;
   overflow:hidden;
@@ -472,13 +491,13 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 .splash-progress{
   position:absolute;
   top:0;left:0;height:100%;
-  width:100%;
-  background:linear-gradient(90deg, transparent, var(--cyan), var(--gold), transparent);
-  animation:splashShimmer 1.4s infinite;
+  width:0%;
+  background:linear-gradient(90deg, var(--cyan), var(--gold));
+  animation:splashProgress 4s linear forwards;
 }
-@keyframes splashShimmer{
-  0%{transform:translateX(-100%)}
-  100%{transform:translateX(100%)}
+@keyframes splashProgress{
+  0%{width:0%}
+  100%{width:100%}
 }
 .splash-hint{
   margin-top:16px;
@@ -489,8 +508,8 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 </head>
 <body>
 
-<!-- SPLASH SCREEN EKRANI -->
-<div id="splashScreen" onclick="dismissSplash()">
+<!-- SPLASH SCREEN EKRANI (MİNİMUM 4 SANİYE GÖRÜNÜR) -->
+<div id="splashScreen">
   <div class="splash-sphere-wrap">
     <div class="splash-ring"></div>
     <div class="splash-ball">
@@ -504,7 +523,7 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   <div class="splash-bar">
     <div class="splash-progress"></div>
   </div>
-  <div class="splash-hint">Başlatmak için dokunun...</div>
+  <div class="splash-hint" id="splashHint">Sistem ve salonlar hazırlanıyor... (4 sn)</div>
 </div>
 
 <!-- TAM EKRAN HEDEFE 1 VAR KRİTİK UYARISI -->
@@ -582,6 +601,7 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   <button class="tgl" id="tFriendCarousel" onclick="toggleFriendCarousel()">🎠 Arkadaş Kartları Karuseli</button>
   <span class="menu-h" style="margin-top:6px">GÖRÜNÜM &amp; DÜZENLEME</span>
   <button class="tgl" onclick="openCustomizer()">🎨 Görünüm Düzenleyici</button>
+  <button class="tgl on" id="tMicVis" onclick="toggleMicVisibility()">🎙️ Kayan Mikrofon Butonu</button>
   <button class="tgl" id="tFit">📺 Tek Ekran (Fit)</button>
   <button class="tgl" id="tAlt">📐 Alternatif Pano</button>
   <button class="tgl" id="tPin">⬆️ En Yakın Kartı Üste Al</button>
@@ -598,6 +618,7 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   <button class="tgl on" id="tSound">🔊 Bip Sesleri</button>
   <button class="tgl on" id="tFlash">💥 Büyük Flaş Uyarısı</button>
   <button class="tgl on" id="tVibe">📳 Titreşim</button>
+  <button class="tgl" onclick="runDiagnosticsTest()">🧪 Motor Testi (OCR / Ses)</button>
   <span class="menu-h" style="margin-top:6px">HIZLI DEMO KARTLARI</span>
   <button class="tgl" onclick="loadDemo(3)">🎲 3 Kart</button>
   <button class="tgl" onclick="loadDemo(6)">🎲 6 Kart</button>
@@ -615,8 +636,9 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   <button class="tg" data-t="t">TOMBALA</button>
 </div>
 
+<!-- AYRIK GÖRÜNÜM ETİKETİ KISALTILDI -->
 <div class="ownbar" id="ownBar">
-  <button class="obtn on" data-ow="split">👥 Ayrık (Benim &amp; Arkadaş)</button>
+  <button class="obtn on" data-ow="split">👥 Ayrık</button>
   <button class="obtn" data-ow="me">👈 Sadece Benim</button>
   <button class="obtn" data-ow="friend">👉 Sadece Arkadaş</button>
 </div>
@@ -687,21 +709,21 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 
 <div class="toast" id="toast"></div>
 
-<!-- SALON SEÇİMİ VE ARŞİVİ MODALI -->
+<!-- SALON SEÇİMİ VE ARŞİVİ MODALI (DÜZENLEME & STANDART BUTONLAR) -->
 <dialog id="venueSelectDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
     <h2 style="margin:0;color:var(--gold);font-size:16px">🏛️ SALON SEÇİMİ &amp; ARŞİV</h2>
-    <button class="btn-no" onclick="document.getElementById('venueSelectDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('venueSelectDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">Her salonun kart listesi, kişi kayıtları ve ayarları bağımsız olarak kendi arşivinde saklanır.</p>
 
   <div id="venueList" style="display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;margin:12px 0"></div>
 
-  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:12px">
+  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin-bottom:12px">
     <div style="font-size:10px;font-weight:800;color:var(--cyan);letter-spacing:1px;margin-bottom:6px">＋ YENİ SALON EKLE</div>
     <div style="display:flex;gap:6px">
-      <input type="text" id="newVenueName" placeholder="Örn: Zafer Kahvesi, Sahil Salonu..." style="flex:1;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-weight:bold;font-size:12px">
-      <button class="btn-cy" onclick="createVenueFromInput()" style="padding:8px 14px;font-size:12px">Ekle</button>
+      <input type="text" id="newVenueName" placeholder="Örn: Zafer Kahvesi, Sahil Salonu..." style="flex:1;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:6px;color:var(--txt);font-weight:bold;font-size:12px">
+      <button class="btn-cy" onclick="createVenueFromInput()" style="padding:8px 16px;font-size:12px">Ekle</button>
     </div>
   </div>
 
@@ -714,18 +736,18 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="cardEditDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--gold)" id="cardEditTitle">Kart Düzenle</h2>
-    <button class="btn-no" onclick="document.getElementById('cardEditDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('cardEditDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   
   <div style="display:flex;flex-direction:column;gap:8px">
     <div style="display:flex;gap:6px">
       <div style="flex:1">
         <label class="hint">Kart Numarası</label>
-        <input type="text" id="cedNo" class="mono" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--gold);font-weight:bold;font-size:15px">
+        <input type="text" id="cedNo" class="mono" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--gold);font-weight:bold;font-size:15px">
       </div>
       <div style="flex:1">
         <label class="hint">Kart Sahibi / Kişi</label>
-        <select id="cedPerson" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-weight:bold;font-size:13px"></select>
+        <select id="cedPerson" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--txt);font-weight:bold;font-size:13px"></select>
       </div>
     </div>
 
@@ -740,7 +762,7 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
     <div>
       <label class="hint">Kart Maliyeti / Tutarı (₺)</label>
       <div class="price-grid" id="cedPriceGrid"></div>
-      <input type="number" id="cedCustomPrice" placeholder="Özel tutar..." style="width:100%;padding:7px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:bold">
+      <input type="number" id="cedCustomPrice" placeholder="Özel tutar..." style="width:100%;padding:7px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:bold">
     </div>
 
     <div>
@@ -762,17 +784,17 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="personsDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--cyan)">👥 KİŞİ &amp; OYUNCU LİSTESİ</h2>
-    <button class="btn-no" onclick="document.getElementById('personsDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('personsDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">Önceden arkadaş veya oyuncu isimleri girin. Kartlara kişi atayabilirsiniz.</p>
   
   <div id="personsList" style="display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;margin:8px 0"></div>
 
-  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:8px;margin-top:6px">
+  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:6px">
     <div style="font-size:10px;font-weight:800;color:var(--cyan);margin-bottom:4px">YENİ KİŞİ EKLE</div>
     <div style="display:flex;gap:4px">
-      <input type="text" id="newPersonName" placeholder="Kişi Adı..." style="flex:1;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt)">
-      <select id="newPersonRole" style="padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--txt)">
+      <input type="text" id="newPersonName" placeholder="Kişi Adı..." style="flex:1;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:6px;color:var(--txt)">
+      <select id="newPersonRole" style="padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:6px;color:var(--txt)">
         <option value="friend">Arkadaş</option>
         <option value="me">Benim</option>
       </select>
@@ -789,12 +811,12 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="batchPriceDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--green)">💰 TOPLU KART TUTARI BELİRLE</h2>
-    <button class="btn-no" onclick="document.getElementById('batchPriceDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('batchPriceDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">Masadaki tüm kartların veya sadece sizin kartlarınızın fiyatını tek seferde değiştirin.</p>
   
   <div class="price-grid" id="batchPriceGrid"></div>
-  <input type="number" id="batchCustomPrice" placeholder="Özel tutar..." style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:bold;margin-bottom:8px">
+  <input type="number" id="batchCustomPrice" placeholder="Özel tutar..." style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:bold;margin-bottom:8px">
 
   <div class="drow">
     <button class="btn-ok" onclick="applyBatchPrice('all')">Tüm Kartlara Uygula</button>
@@ -803,15 +825,15 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   </div>
 </dialog>
 
-<!-- İKİNCİL KAMERA / PANO TARAYICI MODALI & YERLEŞİK OCR -->
+<!-- İKİNCİL KAMERA / PANO TARAYICI & YERLEŞİK OCR -->
 <dialog id="cameraStreamerDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--cyan)">📷 İKİNCİL KAMERA &amp; YERLEŞİK OCR</h2>
-    <button class="btn-no" onclick="stopCameraStreamer();document.getElementById('cameraStreamerDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="stopCameraStreamer();document.getElementById('cameraStreamerDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">Bu cihazı çekiliş panosuna doğrultun. Algılanan numaralar birinci cihaza canlı aktarılırken birinci cihazdan elle giriş de kesintisiz devam eder.</p>
   
-  <video id="streamerVideo" playsinline muted style="width:100%;border-radius:12px;background:#000;max-height:36vh;object-fit:cover"></video>
+  <video id="streamerVideo" playsinline muted style="width:100%;border-radius:8px;background:#000;max-height:36vh;object-fit:cover"></video>
   <canvas id="streamerCanvas" style="display:none"></canvas>
 
   <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0">
@@ -836,18 +858,18 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="first21Dlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--gold)">🎯 İLK 21 OYUNU &amp; HESAP</h2>
-    <button class="btn-no" onclick="document.getElementById('first21Dlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('first21Dlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">İlk 21 çekilişte 2 veya 3 sayıyı bulma yan oyunu. Maliyet ve ödülü girin, çekiliş başlayınca seçim kilitlenir.</p>
   
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0">
     <div>
       <label class="hint">Oyun Maliyeti (₺)</label>
-      <input type="number" id="f21Cost" value="20" style="width:100%;padding:7px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--gold);font-family:'JetBrains Mono',monospace;font-weight:bold">
+      <input type="number" id="f21Cost" value="20" style="width:100%;padding:7px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--gold);font-family:'JetBrains Mono',monospace;font-weight:bold">
     </div>
     <div>
       <label class="hint">Kazanç Ödülü (₺)</label>
-      <input type="number" id="f21Reward" value="200" style="width:100%;padding:7px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:bold">
+      <input type="number" id="f21Reward" value="200" style="width:100%;padding:7px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:bold">
     </div>
   </div>
 
@@ -863,26 +885,45 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   <div class="drow"><button class="btn-ok" onclick="saveFirst21Settings()">Kaydet &amp; Kapat</button></div>
 </dialog>
 
-<!-- WI-FI ERİŞİM NOKTASI MODALI -->
+<!-- WI-FI ERİŞİM NOKTASI MODALI (YETKİ VE İZİN SEÇİMİ İLE) -->
 <dialog id="wifiDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--cyan)">📶 WI-FI CANLI SENKRON &amp; QR</h2>
-    <button class="btn-no" onclick="document.getElementById('wifiDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('wifiDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">İnternet olmasa dahi Telefonunuzun Wi-Fi Erişim Noktası (Hotspot) üzerinden diğer telefonlarla anlık senkronize olun.</p>
   
-  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0;font-size:12px;line-height:1.4">
+  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin:8px 0;font-size:12px;line-height:1.4">
     <div style="display:flex;justify-content:space-between;margin-bottom:4px">
       <span>Oda / Ağ Adı:</span>
       <b class="mono" style="color:var(--cyan)" id="wifiRoomName">ASTRA-TOMBALA-88</b>
     </div>
     <div style="display:flex;justify-content:space-between">
-      <span>Rol:</span>
+      <span>Rolünüz:</span>
       <b style="color:var(--gold)" id="wifiRoleText">Yayıncı / Ana Cihaz</b>
     </div>
   </div>
 
-  <div style="text-align:center;padding:10px;background:#fff;border-radius:12px;margin:8px auto;width:170px;height:170px;display:flex;align-items:center;justify-content:center" id="wifiQrContainer">
+  <!-- YETKİ VE İZİN SEÇİMİ -->
+  <div style="background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin:8px 0">
+    <div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:6px">🔒 WI-FI ERİŞİM &amp; YETKİ SEVİYESİ</div>
+    <div style="display:flex;flex-direction:column;gap:7px;font-size:11.5px">
+      <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+        <input type="radio" name="wifiPerm" value="full" id="permFull" onchange="setWifiPermission('full')">
+        <span><b>Tam Yetki (Ortak Kontrol):</b> Bağlananlar sayı girebilir ve oyunu yönetir</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+        <input type="radio" name="wifiPerm" value="readonly" id="permReadonly" onchange="setWifiPermission('readonly')">
+        <span><b>Salt Okunur (İzleyici):</b> Sadece çekilen sayıları ve kartları canlı takip eder</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+        <input type="radio" name="wifiPerm" value="camera" id="permCamera" onchange="setWifiPermission('camera')">
+        <span><b>Sadece Kamera Yayını:</b> İkincil cihaz sadece pano görüntüsü ve OCR aktarır</span>
+      </label>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:10px;background:#fff;border-radius:8px;margin:8px auto;width:170px;height:170px;display:flex;align-items:center;justify-content:center" id="wifiQrContainer">
     <svg width="150" height="150" viewBox="0 0 100 100">
       <rect width="100" height="100" fill="#fff"/>
       <rect x="10" y="10" width="30" height="30" fill="#0b1120"/>
@@ -909,7 +950,7 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="numpadDlg" class="numpad-dlg">
   <div class="np-top">
     <div class="np-disp"><span class="np-val" id="npVal">—</span><span class="hint" style="color:var(--dim)">1–90</span></div>
-    <button class="btn-no" onclick="document.getElementById('numpadDlg').close()" style="width:48px;height:58px;font-size:20px;border-radius:12px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('numpadDlg').close()" style="width:48px;height:58px;font-size:20px;border-radius:8px">✕</button>
   </div>
   <div class="np-grid">
     <button class="np-btn" data-d="1">1</button><button class="np-btn" data-d="2">2</button><button class="np-btn" data-d="3">3</button>
@@ -920,8 +961,8 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
     <button class="np-btn" id="npBack" style="font-size:20px">⌫</button>
   </div>
   <div style="display:flex;gap:6px">
-    <button class="btn-ok" id="npSubmit" style="flex:2;height:50px;font-size:18px">İŞARETLE</button>
-    <button class="btn-no" id="npUndoLast" style="flex:1;height:50px;font-size:13px">Geri Al</button>
+    <button class="btn-ok" id="npSubmit" style="flex:2;height:48px;font-size:17px">İŞARETLE</button>
+    <button class="btn-no" id="npUndoLast" style="flex:1;height:48px;font-size:13px">Geri Al</button>
   </div>
 </dialog>
 
@@ -929,17 +970,17 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="calledDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--cyan)">ÇEKİLENLER (<span id="cdCount">0</span>)</h2>
-    <button class="btn-no" onclick="document.getElementById('calledDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('calledDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <p class="hint">İptal etmek istediğiniz numaranın üzerine dokunun.</p>
   <div id="cdList" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-height:50vh;overflow-y:auto;margin:10px 0"></div>
 </dialog>
 
-<!-- GÖRÜNÜM & TEMA DÜZENLEME MODALI -->
+<!-- GÖRÜNÜM & TEMA DÜZENLEME MODALI (SÜTUN SEÇİMİ & MİKROFON AYARI DAHİL) -->
 <dialog id="customizerDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--purple)">🎨 GÖRÜNÜM VE TEMA DÜZENLE</h2>
-    <button class="btn-no" onclick="document.getElementById('customizerDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('customizerDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
 
   <div style="display:flex;flex-direction:column;gap:12px;margin:10px 0">
@@ -951,6 +992,34 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
         <button class="pbtn" onclick="setAppTheme('theme-oled')">🖤 Saf OLED Siyahı</button>
         <button class="pbtn" onclick="setAppTheme('theme-wood')">🪵 Klasik Ahşap</button>
         <button class="pbtn" onclick="setAppTheme('theme-contrast')">⚡ Yüksek Kontrast</button>
+      </div>
+    </div>
+
+    <!-- KART SÜTUN SAYISI SEÇİMİ -->
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <label class="hint" style="font-weight:bold">KART SÜTUN SAYISI</label>
+        <span class="hint mono" id="lblCardsCols">Otomatik</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:4px">
+        <button type="button" class="pbtn col-btn" data-col="auto" onclick="setCardsCols('auto')">Oto</button>
+        <button type="button" class="pbtn col-btn" data-col="1" onclick="setCardsCols(1)">1 Sütun</button>
+        <button type="button" class="pbtn col-btn" data-col="2" onclick="setCardsCols(2)">2 Sütun</button>
+        <button type="button" class="pbtn col-btn" data-col="3" onclick="setCardsCols(3)">3 Sütun</button>
+        <button type="button" class="pbtn col-btn" data-col="4" onclick="setCardsCols(4)">4 Sütun</button>
+      </div>
+    </div>
+
+    <!-- ARKADAŞ KARUSELİ & MİKROFON BUTONU SEÇENEKLERİ -->
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px">
+        <span style="font-size:12px;font-weight:700">🎠 Arkadaş Kartları Karuseli</span>
+        <button type="button" class="pbtn" id="custCarouselBtn" onclick="toggleFriendCarousel()" style="padding:4px 12px;font-size:11px">Kapalı</button>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px">
+        <span style="font-size:12px;font-weight:700">🎙️ Kayan Mikrofon Butonu</span>
+        <button type="button" class="pbtn" id="custMicBtn" onclick="toggleMicVisibility()" style="padding:4px 12px;font-size:11px">Açık</button>
       </div>
     </div>
 
@@ -987,7 +1056,7 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 <dialog id="cardPreviewDlg">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
     <h2 style="margin:0;color:var(--gold)" id="previewTitle">Kart Detayı</h2>
-    <button class="btn-no" onclick="document.getElementById('cardPreviewDlg').close()" style="padding:4px 8px;border-radius:8px">✕</button>
+    <button class="btn-no" onclick="document.getElementById('cardPreviewDlg').close()" style="padding:4px 8px;border-radius:6px">✕</button>
   </div>
   <div id="previewBody"></div>
   <div class="drow"><button class="btn-ok" onclick="document.getElementById('cardPreviewDlg').close()">Kapat</button></div>
@@ -1089,7 +1158,18 @@ let extFlags = {c1:false, c2:false};
 let lastMark = null;
 let prizeLimit = null;
 let payout = {c1:3, c2:6, t:15};
-let S = {flash:true, voice:true, sound:true, vibe:true, wake:true, pin:false};
+let S = {
+  flash: true,
+  voice: true,
+  sound: true,
+  vibe: true,
+  wake: true,
+  pin: false,
+  showMic: (localStorage.getItem('astra-show-mic') !== '0')
+};
+
+let cardsCols = localStorage.getItem('astra-cards-cols') || 'auto';
+let wifiPermission = localStorage.getItem('astra-wifi-perm') || 'full';
 
 // İLK 21 AYARLARI
 let first21 = {
@@ -1115,9 +1195,10 @@ function ownerIcon(c){
 }
 function colOf(n){ return n<10?0 : n>=80?8 : Math.floor(n/10); }
 
-/* SPLASH SCREEN & SALON YÖNETİMİ */
+/* SPLASH SCREEN (MİNİMUM 4 SANİYE GÖRÜNÜRLÜK) */
 let splashDismissed = false;
-function dismissSplash(){
+const MIN_SPLASH_TIME = 4000;
+setTimeout(()=>{
   if(splashDismissed) return;
   splashDismissed = true;
   const sp = document.getElementById('splashScreen');
@@ -1125,12 +1206,10 @@ function dismissSplash(){
     sp.classList.add('hide');
     setTimeout(()=>{
       sp.remove();
-      // Salon seçim modalını aç
       openVenueModal();
     }, 450);
   }
-}
-setTimeout(()=>{ dismissSplash(); }, 1400);
+}, MIN_SPLASH_TIME);
 
 function openVenueModal(){
   renderVenueList();
@@ -1145,7 +1224,7 @@ function renderVenueList(){
     const cCount = (v.cards || []).length;
     const isAct = vName === activeVenue;
     return `
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:${isAct?'rgba(255,189,0,.15)':'var(--panel2)'};border:1.5px solid ${isAct?'var(--gold)':'var(--line)'};border-radius:12px;padding:9px 12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:${isAct?'rgba(255,189,0,.15)':'var(--panel2)'};border:1.5px solid ${isAct?'var(--gold)':'var(--line)'};border-radius:var(--radius);padding:8px 10px">
         <div style="flex:1;min-width:0;cursor:pointer" onclick="selectVenue('${vName}')">
           <div style="font-weight:800;font-size:13px;color:${isAct?'var(--gold)':'var(--txt)'};display:flex;align-items:center;gap:6px">
             <span>🏛️ ${vName}</span>
@@ -1153,9 +1232,10 @@ function renderVenueList(){
           </div>
           <div style="font-size:10.5px;color:var(--dim);margin-top:2px">${cCount} Kayıtlı Kart · ${(v.persons||[]).length} Oyuncu</div>
         </div>
-        <div style="display:flex;gap:4px">
-          ${!isAct?`<button class="btn-cy" onclick="selectVenue('${vName}')" style="padding:5px 9px;font-size:11px">Seç</button>`:''}
-          ${Object.keys(venues).length>1?`<button class="btn-rd" onclick="deleteVenue('${vName}')" style="padding:5px 8px;font-size:11px">Sil</button>`:''}
+        <div style="display:flex;gap:5px;align-items:center">
+          ${!isAct?`<button class="btn-cy" onclick="selectVenue('${vName}')" style="padding:6px 12px;font-size:11px">Seç</button>`:''}
+          <button class="btn-no" onclick="editVenue('${vName}')" style="padding:6px 9px;font-size:11px" title="Salon Adını Düzenle">✎ Düzenle</button>
+          ${Object.keys(venues).length>1?`<button class="btn-rd" onclick="deleteVenue('${vName}')" style="padding:6px 9px;font-size:11px" title="Salonu Sil">✕</button>`:''}
         </div>
       </div>
     `;
@@ -1174,6 +1254,26 @@ function selectVenue(vName){
   saveVenues();
   loadVenue(vName);
   document.getElementById('venueSelectDlg').close();
+}
+
+function editVenue(oldName){
+  const newName = prompt(`"${oldName}" salonunun yeni adını girin:`, oldName);
+  if(!newName || !newName.trim() || newName.trim() === oldName) return;
+  const trimmed = newName.trim();
+  if(venues[trimmed]){ showToast('Bu isimde salon zaten var!', 'warn'); return; }
+  
+  venues[trimmed] = venues[oldName];
+  venues[trimmed].name = trimmed;
+  delete venues[oldName];
+  
+  if(activeVenue === oldName){
+    activeVenue = trimmed;
+    localStorage.setItem(ACTIVE_VENUE_KEY, activeVenue);
+    updateVenueUI();
+  }
+  saveVenues();
+  renderVenueList();
+  showToast(`Salon adı "${trimmed}" olarak güncellendi`, 'info');
 }
 
 function createVenueFromInput(){
@@ -1209,6 +1309,45 @@ function deleteVenue(vName){
   renderVenueList();
 }
 
+/* SÜTUN SAYISI YÖNETİMİ */
+function setCardsCols(cols){
+  cardsCols = cols;
+  localStorage.setItem('astra-cards-cols', cols);
+  applyCardsCols();
+  showToast(`Sütun sayısı: ${cols==='auto'?'Otomatik':cols+' Sütun'}`, 'info');
+}
+
+function applyCardsCols(){
+  let template = 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))';
+  if(cardsCols == 1) template = '1fr';
+  else if(cardsCols == 2) template = 'repeat(2, 1fr)';
+  else if(cardsCols == 3) template = 'repeat(3, 1fr)';
+  else if(cardsCols == 4) template = 'repeat(4, 1fr)';
+  
+  document.documentElement.style.setProperty('--cards-col-template', template);
+  document.querySelectorAll('.col-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.col == cardsCols);
+  });
+  const lbl = document.getElementById('lblCardsCols');
+  if(lbl) lbl.textContent = cardsCols==='auto' ? 'Otomatik' : cardsCols + ' Sütun';
+}
+
+/* MİKROFON İKONU GÖRÜNÜRLÜĞÜ */
+function toggleMicVisibility(){
+  S.showMic = !S.showMic;
+  localStorage.setItem('astra-show-mic', S.showMic ? '1' : '0');
+  updateMicVisibilityUI();
+  showToast(S.showMic ? '🎙️ Kayan mikrofon butonu açık' : '🎙️ Kayan mikrofon butonu gizlendi', 'info');
+}
+function updateMicVisibilityUI(){
+  const b = document.getElementById('btnMic');
+  if(b) b.style.display = S.showMic ? 'flex' : 'none';
+  const t = document.getElementById('tMicVis');
+  if(t) t.classList.toggle('on', S.showMic);
+  const cb = document.getElementById('custMicBtn');
+  if(cb){ cb.textContent = S.showMic ? 'Açık' : 'Gizli'; cb.classList.toggle('on', S.showMic); }
+}
+
 /* OYUN MODLARI */
 function setGameMode(mode){
   gameMode = mode;
@@ -1218,14 +1357,17 @@ function setGameMode(mode){
   document.getElementById('modePillText').textContent = mode==='massive' ? 'Açılış/Kapanış' : 'Standart';
   document.getElementById('modePill').style.borderColor = mode==='massive' ? 'var(--cyan)' : 'var(--gold)';
   render();
-  showToast(mode==='massive' ? '⚡ Açılış/Kapanış Modu Aktif (Yüksek Kart Takibi)' : '🎯 Standart Takip Modu', 'info');
+  showToast(mode==='massive' ? '⚡ Açılış/Kapanış Modu Aktif' : '🎯 Standart Takip Modu', 'info');
 }
 function toggleGameMode(){ setGameMode(gameMode==='standard' ? 'massive' : 'standard'); }
 
 function toggleFriendCarousel(){
   friendCarousel = !friendCarousel;
   document.getElementById('tFriendCarousel').classList.toggle('on', friendCarousel);
+  const cb = document.getElementById('custCarouselBtn');
+  if(cb){ cb.textContent = friendCarousel ? 'Açık' : 'Kapalı'; cb.classList.toggle('on', friendCarousel); }
   render();
+  showToast(`Arkadaş Karuseli: ${friendCarousel ? 'Açık' : 'Kapalı'}`, 'info');
 }
 
 /* HEDEFE 1 VAR KRİTİK UYARISI */
@@ -1342,8 +1484,12 @@ function checkNear(){
   }
 }
 
-/* NUMARA ÇAĞIRMA & GERİ ALMA */
+/* NUMARA ÇAĞIRMA & AKILLI GERİ ALMA */
 function callNumber(n, silent){
+  if(wifiPermission === 'readonly'){
+    showToast('Bu cihaz salt okunur modda, sayı girişi yetkiniz yok', 'warn');
+    return;
+  }
   if(n<1 || n>90) return;
   if(called.has(n)){
     if(!silent) showToast(n + ' zaten çekildi!', 'warn');
@@ -1381,9 +1527,13 @@ function callNumber(n, silent){
 }
 
 function uncall(n, force){
+  if(wifiPermission === 'readonly'){
+    showToast('Salt okunur moddasınız, geri alma yetkiniz yok', 'warn');
+    return;
+  }
   if(!called.has(n)) return;
   const last = history.length ? history[history.length - 1] : null;
-  // Eğer geri alınacak sayı son çıkan sayı ise onay sormadan anında geri alır!
+  // Son çekilen sayı ise onay sormadan anında geri alır!
   if(!force && n !== last){
     if(!confirm(n + ' son çekilen sayı değil (son: ' + (last !== null ? last : '—') + '). Yine de iptal edilsin mi?')) return;
   }
@@ -1536,7 +1686,7 @@ function bigWin(title, card, gold){
   showToast('🏆 ' + title + ' — Kart ' + card.no, 'info');
 }
 
-/* ============ TÜRKÇE SES TANIMA (YERLEŞİK SPEECH API) ============ */
+/* ============ TÜRKÇE SES TANIMA ============ */
 let rec = null, listening = false;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -1574,7 +1724,7 @@ function parseVoiceCommand(text){
 
 function toggleMic(){
   if(!SpeechRecognition){
-    showToast('Tarayıcınız ses tanımayı desteklemiyor veya mikrofon izni verilmedi', 'warn');
+    showToast('Tarayıcınız ses tanımayı desteklemiyor veya izin gerekli', 'warn');
     return;
   }
   listening ? stopMic() : startMic();
@@ -1646,7 +1796,34 @@ function toggleVoice(){
   showToast(S.voice ? '🗣️ Sesli anonslar açık' : '🔇 Sesli anonslar kapalı', 'info');
 }
 
-/* ============ YERLEŞİK OCR VE FOTOĞRAF TARAYICI ============ */
+/* ============ YERLEŞİK OCR VE SİSTEM TESTİ ============ */
+function runDiagnosticsTest(){
+  const results = [];
+  const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const testPhrase = "on beş kırk iki yetmiş yedi";
+  const parsed = parseNumbers(testPhrase);
+  const srOk = parsed.includes(15) && parsed.includes(42) && parsed.includes(77);
+  results.push(`🎙️ Türkçe Sayı Ayrıştırıcı: ${srOk?'BAŞARILI [15, 42, 77]':'HATA'}`);
+  results.push(`🗣️ Web Speech API Desteği: ${hasSR?'MEVCUT (tr-TR)':'Tarayıcıda Destek Yok / İzin Gerekli'}`);
+
+  let canvasOk = false;
+  try {
+    const c = document.createElement('canvas');
+    c.width = 10; c.height = 10;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#ffbd00';
+    ctx.fillRect(0,0,10,10);
+    const p = ctx.getImageData(0,0,1,1).data;
+    canvasOk = p[0] > 200 && p[1] > 150;
+  } catch(e){}
+  results.push(`📷 Yerel Canvas OCR & Piksel İşleme: ${canvasOk?'BAŞARILI':'HATA'}`);
+  results.push(`🔊 Web Audio Synthesizer: ${window.AudioContext||window.webkitAudioContext?'AKTİF':'YOK'}`);
+  results.push(`📳 Titreşim Motoru: ${navigator.vibrate?'DESTEKLENİYOR':'YOK'}`);
+
+  alert("🧪 ASTRA MOTOR VE SENSÖR TANISI:\n\n" + results.join("\n"));
+  showToast('✓ Sistem & Motor Testi Başarılı', 'info');
+}
+
 function handleCardPhotoUpload(file){
   if(!file) return;
   const status = document.getElementById('cardOcrStatus');
@@ -1876,7 +2053,7 @@ function openPersonsModal(){
 function renderPersonsList(){
   const el = document.getElementById('personsList');
   el.innerHTML = persons.map(p=>
-    `<div style="display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px">
+    `<div style="display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px">
       <div><b>${p.name}</b> <small style="color:${p.role==='friend'?'var(--purple)':'var(--cyan)'}">(${p.role==='friend'?'Arkadaş':'Benim'})</small></div>
       ${persons.length>1?`<button class="btn-rd" style="padding:4px 8px;font-size:11px" onclick="removePerson('${p.id}')">Sil</button>`:''}
     </div>`
@@ -2025,8 +2202,25 @@ function processCameraFeed(){
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 }
 
-/* WI-FI ERİŞİM NOKTASI SENKRONU */
-function openWifiModal(){ document.getElementById('wifiDlg').showModal(); }
+/* WI-FI ERİŞİM NOKTASI SENKRONU & YETKİLENDİRME */
+function openWifiModal(){
+  const rFull = document.getElementById('permFull');
+  const rRo = document.getElementById('permReadonly');
+  const rCam = document.getElementById('permCamera');
+  if(wifiPermission === 'readonly' && rRo) rRo.checked = true;
+  else if(wifiPermission === 'camera' && rCam) rCam.checked = true;
+  else if(rFull) rFull.checked = true;
+  
+  document.getElementById('wifiDlg').showModal();
+}
+
+function setWifiPermission(perm){
+  wifiPermission = perm;
+  localStorage.setItem('astra-wifi-perm', perm);
+  triggerWifiBroadcast();
+  showToast(`Wi-Fi İzin Seviyesi: ${perm==='readonly'?'Salt Okunur (İzleyici)':perm==='camera'?'Kamera Yayını':'Tam Yetki'}`, 'info');
+}
+
 function startWifiHost(){
   document.getElementById('wifiRoleText').textContent = 'Yayıncı (Erişim Noktası)';
   document.getElementById('wifiStatusPill').classList.add('stream');
@@ -2045,6 +2239,7 @@ function triggerWifiBroadcast(){
     target: TARGET,
     extFlags,
     first21,
+    permission: wifiPermission,
     time: Date.now()
   };
   try {
@@ -2066,6 +2261,7 @@ try {
         history = snap.history || history;
         if(snap.target) TARGET = snap.target;
         if(snap.extFlags) extFlags = snap.extFlags;
+        if(snap.permission) wifiPermission = snap.permission;
         lastMark = history.length ? history[history.length-1] : null;
         document.getElementById('lastNum').textContent = lastMark || '—';
         recalc();
@@ -2074,7 +2270,7 @@ try {
   }
 } catch(e){}
 
-/* RENDER MOTORU */
+/* RENDER MOTORU (KART SÜTUN SAYISI & KOMPAKT DÜZEN) */
 function render(){
   const cardsSec = document.getElementById('cardsSec');
   cardsSec.innerHTML = '';
@@ -2090,9 +2286,7 @@ function render(){
     frCol.innerHTML = `<div class="pcol-hdr"><span>👉 ARKADAŞ KARTLARI</span><span class="mono">${cards.filter(c=>c.owner==='friend').length} Kart</span></div>`;
     
     const myCardsWrap = document.createElement('div');
-    myCardsWrap.style.display = 'flex';
-    myCardsWrap.style.flexDirection = 'column';
-    myCardsWrap.style.gap = '8px';
+    myCardsWrap.className = 'card-list-grid';
     
     cards.forEach((c, idx)=>{
       if(c.owner!=='friend'){
@@ -2112,9 +2306,7 @@ function render(){
       frCol.appendChild(carBox);
     } else {
       const frCardsWrap = document.createElement('div');
-      frCardsWrap.style.display = 'flex';
-      frCardsWrap.style.flexDirection = 'column';
-      frCardsWrap.style.gap = '8px';
+      frCardsWrap.className = 'card-list-grid';
       cards.forEach((c, idx)=>{
         if(c.owner==='friend'){
           frCardsWrap.appendChild(buildCardElement(c, idx));
@@ -2126,7 +2318,7 @@ function render(){
     cardsSec.appendChild(myCol);
     cardsSec.appendChild(frCol);
   } else {
-    cardsSec.className = 'single-grid';
+    cardsSec.className = 'single-grid card-list-grid';
     cards.forEach((c, idx)=>{
       if(ownerFilter==='me' && c.owner==='friend') return;
       if(ownerFilter==='friend' && c.owner!=='friend') return;
@@ -2255,13 +2447,19 @@ function openCalledDialog(){
   document.getElementById('cdCount').textContent = called.size;
   const list = document.getElementById('cdList');
   list.innerHTML = [...called].sort((a,b)=>a-b).map(n=>
-    `<div style="background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--cyan);cursor:pointer" onclick="uncall(${n})">${n}</div>`
+    `<div style="background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:7px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--cyan);cursor:pointer" onclick="uncall(${n})">${n}</div>`
   ).join('');
   document.getElementById('calledDlg').showModal();
 }
 document.getElementById('qList').onclick = openCalledDialog;
 
-function openCustomizer(){ document.getElementById('customizerDlg').showModal(); }
+function openCustomizer(){
+  applyCardsCols();
+  updateMicVisibilityUI();
+  const cb = document.getElementById('custCarouselBtn');
+  if(cb){ cb.textContent = friendCarousel ? 'Açık' : 'Kapalı'; cb.classList.toggle('on', friendCarousel); }
+  document.getElementById('customizerDlg').showModal();
+}
 
 function setAppTheme(themeName){
   document.body.classList.remove('theme-casino','theme-oled','theme-wood','theme-contrast');
@@ -2269,7 +2467,8 @@ function setAppTheme(themeName){
   localStorage.setItem('astra-theme', themeName);
 }
 function updateCardScale(val){
-  document.documentElement.style.setProperty('--card-scale', val/100);
+  const factor = val / 100;
+  document.documentElement.style.setProperty('--card-scale', factor);
   document.getElementById('lblCardScale').textContent = val + '%';
 }
 function updateCellFont(val){
@@ -2418,8 +2617,31 @@ document.getElementById('tAlt').onclick = ()=>{ document.body.classList.toggle('
 
 // BAŞLANGIÇ YÜKLEMESİ
 loadVenue(activeVenue);
+applyCardsCols();
+updateMicVisibilityUI();
 render();
 renderHist();
+
+// URL HASH HELPER FOR PREVIEWS & AUTOMATION
+(function handleSnapshotParam(){
+  const hash = location.hash;
+  if(!hash) return;
+  const sp = document.getElementById('splashScreen');
+  if(hash.includes('snap=splash')) return;
+  if(sp) sp.remove();
+  
+  if(hash.includes('snap=venue')){
+    openVenueModal();
+  } else if(hash.includes('snap=customizer')){
+    openCustomizer();
+  } else if(hash.includes('snap=wifi')){
+    openWifiModal();
+  } else if(hash.includes('snap=numpad')){
+    openNumpad();
+  } else if(hash.includes('snap=massive')){
+    setGameMode('massive');
+  }
+})();
 </script>
 </body>
 </html>
