@@ -1,0 +1,25 @@
+{
+  "name": "tombala-takip",
+  "version": "1.0.0",
+  "description": "Astra Xtreme Tombala Takip OS - Wi-Fi Erişim Noktası Canlı Takip, Senkronizasyon ve Görünüm Düzenleme Destekli Mobil Uygulama",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "wifi-server": "node server.js",
+    "py-server": "python yerel_sunucu.py",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "tombala",
+    "bingo",
+    "wifi-sync",
+    "android",
+    "mobile",
+    "layout-customizer"
+  ],
+  "author": "Astra",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

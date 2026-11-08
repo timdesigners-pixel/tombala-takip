@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#05070c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>ASTRA TOMBALA OS · Wi-Fi Canlı Takip & Görünüm Düzenleme</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070c;
+  --glass: rgba(15,23,42,.78);
+  --panel: #0b1120;
+  --panel2: #10182c;
+  --line: #1d2842;
+  --cyan: #00f0ff;
+  --purple: #bd00ff;
+  --gold: #ffbd00;
+  --green: #22e07a;
+  --red: #ff3b5c;
+  --txt: #e8eefc;
+  --dim: #7c8aa8;
+  --radius: 16px;
+  --card-scale: 1;
+  --cell-font-size: 16px;
+  --board-cols: 10;
+  --board-cell-size: 34px;
+}
+
+/* TEMA SINIFLARI */
+body.theme-casino {
+  --bg: #03140a;
+  --glass: rgba(6,36,18,.82);
+  --panel: #062112;
+  --panel2: #092e19;
+  --line: #124d2b;
+  --cyan: #2bf0a2;
+  --purple: #d4af37;
+  --gold: #f5c842;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --txt: #edfbf2;
+  --dim: #82a893;
+}
+body.theme-oled {
+  --bg: #000000;
+  --glass: rgba(18,18,18,.90);
+  --panel: #0a0a0a;
+  --panel2: #141414;
+  --line: #242424;
+  --cyan: #38bdf8;
+  --purple: #c084fc;
+  --gold: #fbbf24;
+  --green: #4ade80;
+  --red: #f87171;
+  --txt: #ffffff;
+  --dim: #888888;
+}
+body.theme-wood {
+  --bg: #1c130d;
+  --glass: rgba(43,28,19,.85);
+  --panel: #271a12;
+  --panel2: #38251a;
+  --line: #523826;
+  --cyan: #e2b078;
+  --purple: #c87d55;
+  --gold: #f39c12;
+  --green: #27ae60;
+  --red: #c0392b;
+  --txt: #fdf5e6;
+  --dim: #baa494;
+}
+body.theme-contrast {
+  --bg: #000000;
+  --glass: #000000;
+  --panel: #111111;
+  --panel2: #222222;
+  --line: #ffffff;
+  --cyan: #00ffff;
+  --purple: #ff00ff;
+  --gold: #ffff00;
+  --green: #00ff00;
+  --red: #ff2222;
+  --txt: #ffffff;
+  --dim: #cccccc;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{background:radial-gradient(1200px 600px at 50% -10%,var(--panel2),var(--bg));color:var(--txt);font-family:'Bricolage Grotesque',sans-serif;min-height:100vh;padding-bottom:96px;overscroll-behavior-y:contain;transition:background .2s,color .2s}
+.mono{font-family:'JetBrains Mono',monospace}
+button,select,input{font-family:inherit}
+
+header{position:sticky;top:0;z-index:60;background:rgba(5,7,12,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:8px 12px;display:flex;align-items:center;gap:6px}
+.logo{font-weight:800;font-size:14px;line-height:1.1;cursor:pointer}
+.logo b{color:var(--gold)}
+.logo small{display:block;font-size:8px;color:var(--cyan);letter-spacing:1.2px}
+
+/* WI-FI ROZETİ */
+.wifi-pill{display:flex;align-items:center;gap:4px;background:rgba(0,240,255,.1);border:1px solid var(--cyan);border-radius:99px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--cyan);cursor:pointer;white-space:nowrap}
+.wifi-pill.offline{background:rgba(255,59,92,.1);border-color:var(--red);color:var(--red)}
+.wifi-pill.syncing{animation:blip 1s infinite alternate}
+@keyframes blip{from{opacity:.6}to{opacity:1}}
+.wifi-dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+
+.hspeed{margin-left:auto;text-align:center;font-size:8.5px;color:var(--dim);padding:0 3px}
+.hspeed .sp{font-size:12px;font-weight:700}
+.lastwrap{text-align:right;min-width:38px}
+.lastwrap .num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--gold);line-height:1}
+.lastwrap .lbl{font-size:7.5px;color:var(--dim);letter-spacing:1px}
+.hbtn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:11px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.hbtn.on{border-color:var(--cyan);background:rgba(0,240,255,.12);color:var(--cyan)}
+.hbtn.gold{border-color:var(--gold);background:rgba(255,189,0,.15);color:var(--gold)}
+.hbtn.purple{border-color:var(--purple);background:rgba(189,0,255,.16);color:#f0c8ff}
+.gear{background:var(--panel2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:11px;font-size:16px;cursor:pointer;flex-shrink:0}
+.gear.on{border-color:var(--cyan)}
+
+/* AÇILIR MENÜ */
+.menu{position:fixed;top:56px;right:8px;z-index:140;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 12px 34px rgba(0,0,0,.75);width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 66px);overflow-y:auto}
+.menu.open{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start}
+.menu-h{grid-column:1/-1;font-size:9px;letter-spacing:2px;color:var(--dim);font-weight:800;padding:4px 4px 2px}
+.menu .tgl{width:100%;text-align:left;padding:8px 10px;font-size:11.5px;line-height:1.2}
+
+/* SABİTLENMİŞ EN YAKIN BİLGİSİ */
+#pinnedNear{position:sticky;top:55px;z-index:49;background:rgba(11,17,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:4px 12px;cursor:pointer;font-size:11px}
+#pinnedNearGrid{display:grid;grid-template-columns:repeat(9,1fr);max-width:380px;gap:2px;margin:3px auto 0}
+#pinnedNearGrid span{font-family:monospace;text-align:center;background:#ffffff12;border-radius:3px;font-size:10px}
+#pinnedNearGrid .hit{background:rgba(34,224,122,.45);color:#fff;font-weight:bold}
+
+.last5{display:flex;gap:6px;justify-content:center;padding:6px 12px 4px;margin:0 auto}
+.l5{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 0;color:var(--dim);cursor:pointer}
+.l5.cur{background:var(--gold);color:#1a1200;border-color:var(--gold)}
+.l5.empty{opacity:.25;cursor:default}
+
+.heard{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);min-height:15px;padding:2px 12px 4px;text-align:center;opacity:.85}
+
+.target{display:flex;gap:6px;align-items:center;padding:0 12px 6px;margin:0 auto}
+.tlbl{font-size:11px;font-weight:800;color:var(--dim);letter-spacing:1px;white-space:nowrap}
+.tg{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:12px;padding:9px 4px;font-size:11.5px;font-weight:800;cursor:pointer;transition:.12s}
+.tg.on{background:var(--gold);border-color:var(--gold);color:#1a1200}
+.tg.done{opacity:.4;text-decoration:line-through}
+
+.ownbar{display:flex;gap:6px;padding:0 12px 6px;margin:0 auto}
+.obtn{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:12px;padding:8px 6px;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:.15s}
+.obtn.on[data-ow="split"]{border-color:var(--gold);background:rgba(255,189,0,.14);color:var(--gold)}
+.obtn.on[data-ow="me"]{border-color:var(--cyan);background:rgba(0,240,255,.14);color:var(--cyan)}
+.obtn.on[data-ow="friend"]{border-color:var(--purple);background:rgba(189,0,255,.16);color:#e9c8ff}
+
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:0 12px 8px;margin:0 auto}
+@media(min-width:600px){ .quick{grid-template-columns:repeat(4,1fr)} }
+.qb{background:var(--panel2);border:1px solid var(--purple);color:#d7a3ff;border-radius:12px;padding:9px 8px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.qb.warn{border-color:var(--red);color:#ffb3c0}
+.qb.act{border-color:var(--gold);background:rgba(255,189,0,.14);color:var(--gold)}
+.qb.cy{border-color:var(--cyan);background:rgba(0,240,255,.1);color:var(--cyan)}
+
+.lead{margin:0 auto 6px;padding:0 12px;font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+@media(max-width:440px){ .lead{grid-template-columns:1fr} }
+.lbox{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:7px 10px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.lbox.me{border-left:3px solid var(--cyan);color:var(--cyan)}
+.lbox.fr{border-left:3px solid var(--purple);color:#e5b8ff}
+.lbox small{color:var(--txt);font-weight:600;font-size:10.5px}
+
+.winbar{position:sticky;top:54px;z-index:48;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:0 auto 6px;padding:2px 12px}
+.winbar:empty{display:none}
+.wchip{font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:99px;border:1px solid;white-space:nowrap}
+.wchip.c1{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.1)}
+.wchip.c2{color:var(--gold);border-color:var(--gold);background:rgba(255,189,0,.1)}
+.wchip.ct{color:var(--green);border-color:var(--green);background:rgba(34,224,122,.12)}
+
+main{padding:0 8px}
+.play{display:flex;flex-direction:column;gap:12px;margin:0 auto}
+#cardsSec{flex:1;min-width:0}
+#boardCol{min-width:0;position:static;width:100%}
+section{margin-bottom:14px}
+h2{font-size:10px;letter-spacing:1.8px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;font-weight:700}
+
+/* KARTLAR VE DÜZEN */
+#cardsSec{display:grid;grid-template-columns:1fr;gap:10px;align-items:start}
+#cardsSec.split-cols{grid-template-columns:1fr;gap:10px}
+@media(min-width:640px){ #cardsSec.split-cols{grid-template-columns:1fr 1fr} }
+@media(min-width:540px){ #cardsSec.single-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))} }
+
+.pcol{display:flex;flex-direction:column;gap:9px;background:rgba(11,17,32,.55);border:1px solid var(--line);border-radius:18px;padding:9px}
+.pcol.me{border-top:3px solid var(--cyan)}
+.pcol.friend{border-top:3px solid var(--purple)}
+.pcol-hdr{display:flex;align-items:center;justify-content:space-between;padding:3px 6px 5px;border-bottom:1px solid var(--line);font-size:12px;font-weight:800;letter-spacing:.5px}
+.pcol.me .pcol-hdr{color:var(--cyan)}
+.pcol.friend .pcol-hdr{color:#e5b8ff}
+.pcol-hdr small{font-size:9.5px;color:var(--dim);font-weight:700}
+
+.card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius);padding:10px;transition:.2s;position:relative;transform:scale(var(--card-scale));transform-origin:top center}
+.card.cinko1{border-color:var(--cyan)}
+.card.cinko2{border-color:var(--gold)}
+.card.tombala{border-color:var(--green);box-shadow:0 0 22px rgba(34,224,122,.25)}
+.card.closest{box-shadow:0 0 0 1px var(--gold),0 0 20px rgba(255,189,0,.25)}
+.card.near1{box-shadow:0 0 0 2px var(--red),0 0 24px rgba(255,59,92,.5)}
+.card.near2{box-shadow:0 0 0 1px var(--gold),0 0 18px rgba(255,189,0,.35)}
+.card.nopr{opacity:.55;filter:grayscale(.4)}
+.card-head{display:flex;align-items:center;gap:5px;flex-wrap:wrap;border-radius:11px;padding:5px 8px;margin:-3px -3px 6px}
+.card-no{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--gold);font-size:15px}
+.ownchip{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:99px;cursor:pointer;border:1px solid}
+.ownchip.me{background:rgba(0,240,255,.18);color:#00f0ff;border-color:rgba(0,240,255,.55)}
+.ownchip.friend{background:rgba(189,0,255,.22);color:#f0c8ff;border-color:rgba(189,0,255,.6)}
+.pricechip{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;background:rgba(0,0,0,.25);color:var(--green);border:1px solid rgba(34,224,122,.5);border-radius:99px;padding:2px 7px;cursor:pointer}
+.badge{font-size:8.5px;font-weight:800;letter-spacing:.4px;padding:2px 6px;border-radius:99px;display:none}
+.badge.show{display:inline-block}
+.b1{background:rgba(0,240,255,.15);color:var(--cyan)}
+.b2{background:rgba(255,189,0,.15);color:var(--gold)}
+.bt{background:rgba(34,224,122,.18);color:var(--green)}
+.bno{background:rgba(255,59,92,.15);color:var(--red)}
+.btn-edit{margin-left:auto;background:rgba(0,0,0,.25);border:1px solid var(--line);color:var(--txt);border-radius:8px;font-size:11px;padding:3px 7px;cursor:pointer}
+
+.grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3.5px;margin-bottom:3.5px}
+.grid.rowdone{filter:drop-shadow(0 0 3px rgba(0,240,255,.4))}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--panel2);border:1px solid var(--line);border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--cell-font-size);cursor:pointer;transition:.12s;user-select:none}
+.cell:active{transform:scale(.92)}
+.cell.blank{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);opacity:.65;cursor:default}
+.cell.hit{background:linear-gradient(135deg,#5a4607,#8c6d0b);border-color:var(--gold);color:#fff;box-shadow:inset 0 0 8px rgba(255,189,0,.35)}
+.cell.justhit{animation:justhitpop .5s ease-out}
+@keyframes justhitpop{0%{transform:scale(.55);box-shadow:0 0 0 0 rgba(34,224,122,.7)}60%{transform:scale(1.18)}100%{transform:scale(1);box-shadow:0 0 0 8px rgba(34,224,122,0)}}
+
+.jack{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;align-items:center}
+.jack-lbl{font-size:8.5px;letter-spacing:1px;color:var(--dim)}
+.jnum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#000;border:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;cursor:pointer}
+.jnum.hit{background:var(--gold);color:#000;border-color:var(--gold)}
+
+.need{display:flex;gap:4px;margin-top:7px;flex-wrap:wrap;align-items:center}
+.need-lbl{font-size:9.5px;letter-spacing:1px;color:var(--red);font-weight:800}
+.nchip{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;background:rgba(255,59,92,.14);border:1px solid var(--red);color:var(--red);border-radius:7px;padding:2px 8px;cursor:pointer}
+
+/* PANO (BOARD) */
+.board{display:grid;grid-template-columns:repeat(var(--board-cols),1fr);gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px}
+.bn{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,3.2vw,18px);font-weight:700;border-radius:8px;color:var(--dim);background:var(--panel2);cursor:pointer;user-select:none;transition:.1s}
+.bn:active{transform:scale(.9)}
+.bn.called{background:var(--cyan);color:#02181a;font-weight:800}
+.bn.last{background:var(--gold);color:#1a1200;box-shadow:0 0 12px rgba(255,189,0,.6)}
+
+.stats{display:flex;gap:6px}
+.stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:8px;text-align:center}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--cyan)}
+.stat .k{font-size:8.5px;letter-spacing:1px;color:var(--dim)}
+
+.histlist{max-height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.hrow{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 9px;font-size:11.5px}
+.hrow .hn{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold);min-width:28px}
+.hrow.win{border-color:var(--green);color:var(--green);font-weight:700}
+.hrow.cmd{border-color:var(--purple);color:#d7a3ff}
+
+.profit{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;font-size:11.5px}
+.ptab{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:4px 0}
+.ptab th{color:var(--dim);font-weight:600;font-size:8.5px;padding:4px;text-align:center}
+.ptab td{padding:4px 3px;text-align:center;border-top:1px solid var(--line);color:var(--dim)}
+.ptab td.pno{color:var(--gold);font-weight:700}
+.ptab td.won{color:var(--green);font-weight:700;background:rgba(34,224,122,.08)}
+.psum{display:flex;flex-direction:column;gap:4px;margin-top:7px;padding-top:7px;border-top:1px solid var(--line)}
+.psum div{display:flex;justify-content:space-between;align-items:center}
+.psum span{color:var(--dim);font-size:10.5px}
+.psum b{font-family:'JetBrains Mono',monospace;font-size:14px}
+.pbtn{background:var(--panel2);border:1px solid var(--cyan);color:var(--cyan);border-radius:9px;padding:7px 11px;font-weight:700;font-size:11px;cursor:pointer}
+.pbtn.sm{border-color:var(--line);color:var(--dim);padding:7px 9px}
+.btn-reset{width:100%;background:none;border:1px solid var(--red);color:var(--red);border-radius:12px;padding:11px;font-weight:700;cursor:pointer}
+
+/* FLOATING MİKROFON & FLOW BUTONU */
+.micfab{position:fixed;left:14px;bottom:16px;z-index:70;width:54px;height:54px;border-radius:50%;border:none;background:var(--gold);color:#1a1200;font-size:20px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.micfab.active{background:var(--red);color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,92,.5)}50%{box-shadow:0 0 0 12px rgba(255,59,92,0)}}
+
+.flow-wrap{position:fixed;right:14px;bottom:16px;z-index:200;touch-action:none;user-select:none}
+.flow-fab{width:58px;height:58px;border-radius:50%;border:2px solid var(--cyan);background:linear-gradient(135deg,#0b1736,#1b0c38);color:var(--cyan);font-size:22px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:grab;box-shadow:0 8px 26px rgba(0,240,255,.32);transition:transform .15s,border-color .2s}
+.flow-fab small{font-size:7.5px;letter-spacing:1px;color:var(--gold);font-weight:800;margin-top:-2px}
+.flow-wrap.open .flow-panel{display:flex;animation:fpop .18s ease-out}
+.flow-panel{position:absolute;bottom:70px;right:0;width:250px;background:rgba(10,16,32,.96);backdrop-filter:blur(20px);border:1.5px solid var(--cyan);border-radius:18px;padding:9px;display:none;flex-direction:column;gap:6px;box-shadow:0 16px 40px rgba(0,0,0,.8)}
+@keyframes fpop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+.flow-item{display:flex;align-items:center;gap:9px;width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:10px 11px;font-size:12px;font-weight:700;cursor:pointer;text-align:left}
+.flow-item .fi-ic{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.flow-item .fi-tx{flex:1;line-height:1.2}
+.flow-item .fi-tx small{display:block;font-size:9.5px;color:var(--dim);font-weight:600;margin-top:2px}
+.flow-item.gold{border-color:rgba(255,189,0,.55);background:rgba(255,189,0,.1);color:var(--gold)}
+.flow-item.purple{border-color:rgba(189,0,255,.55);background:rgba(189,0,255,.12);color:#e9c8ff}
+.flow-item.cyan{border-color:rgba(0,240,255,.5);background:rgba(0,240,255,.1);color:var(--cyan)}
+.flow-item.red{border-color:rgba(255,59,92,.5);background:rgba(255,59,92,.1);color:#ff99aa}
+
+/* DIALOG STYLES */
+dialog{background:var(--panel);border:1px solid var(--line);border-radius:18px;color:var(--txt);padding:16px;max-width:440px;width:94vw;margin:auto;max-height:88vh;overflow-y:auto}
+dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
+.drow{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.drow button{flex:1;min-width:90px;border:none;border-radius:10px;padding:10px;font-weight:700;cursor:pointer}
+.btn-ok{background:var(--gold);color:#1a1200}
+.btn-cy{background:var(--cyan);color:#02181a}
+.btn-no{background:var(--panel2);color:var(--dim);border:1px solid var(--line)!important}
+.btn-rd{background:var(--red);color:#fff}
+.hint{font-size:10.5px;color:var(--dim);margin:5px 0}
+
+/* GÖRÜNÜM DÜZENLEME PANELİ */
+.customizer-box{display:flex;flex-direction:column;gap:12px;margin:10px 0}
+.theme-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:6px}
+.theme-opt{border:1px solid var(--line);background:var(--panel2);border-radius:11px;padding:8px 6px;text-align:center;cursor:pointer;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.theme-opt.on{border-color:var(--gold);box-shadow:0 0 12px rgba(255,189,0,.35)}
+.color-dots{display:flex;gap:3px}
+.color-dot{width:10px;height:10px;border-radius:50%}
+
+.slider-group{display:flex;flex-direction:column;gap:4px}
+.slider-group label{font-size:11px;color:var(--dim);display:flex;justify-content:space-between;font-weight:700}
+.slider-group input[type="range"]{width:100%;accent-color:var(--cyan);cursor:pointer}
+
+/* WI-FI MODAL */
+.wifi-card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0;display:flex;flex-direction:column;gap:8px}
+.wifi-qr-wrap{background:#fff;border-radius:12px;padding:10px;display:flex;align-items:center;justify-content:center;margin:6px auto;max-width:180px;aspect-ratio:1}
+.wifi-url-box{background:#000;border:1px solid var(--cyan);border-radius:10px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cyan);text-align:center;word-break:break-all}
+.wifi-status-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:4px 9px;border-radius:99px}
+.wifi-status-badge.connected{background:rgba(34,224,122,.15);color:var(--green);border:1px solid var(--green)}
+.wifi-status-badge.waiting{background:rgba(255,189,0,.15);color:var(--gold);border:1px solid var(--gold)}
+
+/* TOAST, WIN & OVERLAYS */
+.toast{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-16px);background:var(--green);color:#02180a;font-weight:800;font-size:13px;padding:10px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:230;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.warn{background:var(--red);color:#fff}
+.toast.info{background:var(--cyan);color:#02181a}
+
+.winov{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(2,12,5,.95);text-align:center;padding:20px}
+.winov.show{display:flex;animation:wi .35s}
+.winov.gold{background:rgba(18,12,0,.96)}
+@keyframes wi{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.winov .wt{font-size:clamp(22px,6vw,34px);font-weight:800;color:var(--green);text-shadow:0 0 25px rgba(34,224,122,.5)}
+.winov.gold .wt{color:var(--gold);text-shadow:0 0 25px rgba(255,189,0,.5)}
+.winclose{margin-top:16px;background:var(--gold);color:#1a1200;border:none;border-radius:12px;padding:12px 30px;font-weight:800;font-size:15px;cursor:pointer}
+
+/* NUMPAD MODAL */
+.numpad-dlg{max-width:390px;width:95vw;padding:12px;border:1.5px solid var(--gold)}
+.np-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.np-disp{flex:1;background:#050811;border:2px solid var(--gold);border-radius:12px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;min-height:60px}
+.np-val{font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:800;color:var(--gold);line-height:1}
+.np-hint{font-size:10px;color:var(--dim);text-align:right}
+.np-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.np-btn{height:58px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.np-btn:active{transform:scale(.94);background:rgba(0,240,255,.18);border-color:var(--cyan)}
+.np-btn.clr{background:rgba(255,59,92,.14);color:var(--red);font-size:16px}
+.np-btn.del{background:rgba(255,189,0,.12);color:var(--gold);font-size:20px}
+.np-actions{display:grid;grid-template-columns:2fr 1fr;gap:6px}
+.np-ok{height:54px;border:none;border-radius:12px;background:var(--green);color:#021b0c;font-size:18px;font-weight:800;cursor:pointer}
+.np-undo{height:54px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--dim);font-size:12px;font-weight:700;cursor:pointer}
+
+/* GÖRÜNÜM MODLARI */
+body.view-cards #boardCol,body.view-cards #extras,body.view-cards #last5,body.view-cards .heard,body.view-cards .lead{display:none}
+body.view-board{height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+body.view-board .heard,body.view-board #last5,body.view-board .lead,body.view-board .quick,body.view-board #cardsSec,body.view-board #extras,body.view-board #winBar,body.view-board .ownbar{display:none}
+body.view-board main{flex:1;min-height:0;display:flex;padding:6px}
+body.view-board .play{flex:1;min-height:0;display:flex}
+body.view-board #boardCol{flex:1;width:100%;display:flex;flex-direction:column}
+body.view-board #boardCol .board{flex:1;grid-template-columns:repeat(10,1fr);grid-auto-rows:1fr;gap:5px;background:none;border:none;padding:0}
+body.view-board #boardCol .bn{font-size:clamp(16px,4vw,32px);border-radius:8px}
+
+body.fit{height:100vh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0}
+body.fit #setupSec,body.fit #extras,body.fit .heard,body.fit #last5,body.fit .quick,body.fit .lead{display:none!important}
+body.fit main{flex:1;min-height:0;display:flex;padding:0 6px 6px}
+body.fit .play{flex:1;min-height:0;display:flex;gap:6px;overflow:hidden}
+body.fit #cardsSec{flex:1.8;overflow:auto}
+body.fit #boardCol{flex:1;overflow:auto;display:flex;flex-direction:column}
+body.fit #boardCol .board{grid-template-columns:repeat(9,1fr);gap:2.5px}
+
+body.altlayout{position:fixed;inset:0;overflow:hidden;display:flex;flex-direction:column;padding:0!important}
+body.altlayout main{flex:1;min-height:0;display:flex;flex-direction:column;padding:0;overflow:hidden}
+body.altlayout .play{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;gap:0}
+body.altlayout #cardsSec{flex:1;min-height:0;width:100%;overflow:auto;padding:6px 10px}
+body.altlayout #boardCol{flex:0 0 auto;width:100%;background:#080c16;border-top:2px solid var(--gold);padding:8px 12px 36px;box-shadow:0 -6px 20px rgba(0,0,0,.55)}
+body.altlayout #boardCol h2{display:none}
+body.altlayout #boardCol .board{grid-template-columns:repeat(18,1fr);gap:3.5px;padding:0;background:none;border:none}
+body.altlayout #boardCol .bn{height:26px;font-size:12px;border-radius:5px}
+
+@media(min-width:960px){
+  body{padding-bottom:24px}
+  .play{flex-direction:row;align-items:flex-start;gap:14px;max-width:1400px}
+  #cardsSec{flex:1}
+  #boardCol{flex:0 0 350px;position:sticky;top:70px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="openCustomizer()" title="Görünüm ve Temayı Düzenle">ASTRA <b>TOMBALA</b><small>WIFI SYNC & OS</small></div>
+  <div class="wifi-pill" id="wifiStatusPill" onclick="openWifiModal()" title="Wi-Fi Erişim Noktası ve Canlı Senkronizasyon">
+    <span class="wifi-dot"></span><span id="wifiPillText">Wi-Fi Hazır</span>
+  </div>
+  <div class="hspeed"><div class="sp" id="speedIc">🚶</div><div id="speedTx">Hız</div></div>
+  <div class="lastwrap"><div class="num mono" id="lastNum">—</div><div class="lbl">SON</div></div>
+  <button class="hbtn gold" id="hdrKeypadBtn" title="Büyük Elle Sayı Girişi">🔢</button>
+  <button class="hbtn purple" id="hdrThemeBtn" onclick="openCustomizer()" title="🎨 Görünüm & Tema Düzenle">🎨</button>
+  <button class="hbtn on" id="hdrVoiceBtn" title="Sesli Yanıt Aç/Kapat">🗣️</button>
+  <button class="gear" id="gearBtn" title="Ayarlar Menüsü">⚙️</button>
+</header>
+
+<div id="pinnedNear" onclick="openNearestPreview()" role="button" tabindex="0"><span id="pinnedNearText"></span><div id="pinnedNearGrid"></div></div>
+
+<div class="menu" id="menu">
+  <span class="menu-h">GÖRÜNÜM & DÜZENLEME</span>
+  <button class="tgl on" onclick="openCustomizer()">🎨 Görünüm Düzenleyici</button>
+  <button class="tgl" id="tFit">📺 Tek Ekran (Fit)</button>
+  <button class="tgl" id="tAlt">📐 Alternatif Pano</button>
+  <button class="tgl" id="tPin">⬆️ En Yakın Kartı Üste Al</button>
+  <span class="menu-h" style="margin-top:6px">WIFI ERİŞİM NOKTASI & PAYLAŞIM</span>
+  <button class="tgl on" onclick="openWifiModal()">📶 Wi-Fi Canlı Takip & QR</button>
+  <button class="tgl" onclick="openLocalBoard()">📷 Yerel Pano Kamerası</button>
+  <span class="menu-h" style="margin-top:6px">SES VE BİLDİRİM</span>
+  <button class="tgl on" id="tVoice">🗣️ Sesli Anonslar</button>
+  <button class="tgl on" id="tSound">🔊 Bip Sesleri</button>
+  <button class="tgl on" id="tFlash">💥 Büyük Flaş Uyarısı</button>
+  <button class="tgl on" id="tVibe">📳 Titreşim</button>
+  <span class="menu-h" style="margin-top:6px">KART VE OYUN YÖNETİMİ</span>
+  <button class="tgl" id="mSetup">🏛 Salon & Kart No</button>
+  <button class="tgl" id="mArchive">🗂 Kart Arşivi</button>
+  <button class="tgl" id="mJson">📋 JSON Kartlar</button>
+  <button class="tgl" onclick="openMoney()">💰 Kâr / Maliyet Defteri</button>
+  <span class="menu-h" style="margin-top:6px">DEMO</span>
+  <button class="tgl" onclick="loadDemo(3)">🎲 3 Kart</button>
+  <button class="tgl" onclick="loadDemo(6)">🎲 6 Kart</button>
+  <button class="tgl" onclick="loadDemo(12)">🎲 12 Kart</button>
+  <button class="tgl" onclick="loadDemo(24)">🎲 24 Kart</button>
+</div>
+
+<div class="last5" id="last5" title="Çıkan rakamları sıralı görmek için dokun"></div>
+<div class="heard" id="heard">🎙 Mikrofon veya 🔢 Elle Giriş ile sayı söyle/gir</div>
+
+<div class="target">
+  <span class="tlbl">🎯 HEDEF:</span>
+  <button class="tg on" data-t="c1">1. ÇİNKO</button>
+  <button class="tg" data-t="c2">2. ÇİNKO</button>
+  <button class="tg" data-t="t">TOMBALA</button>
+</div>
+
+<div class="ownbar" id="ownBar">
+  <button class="obtn on" data-ow="split">🌗 Sol & Sağ Ayrı (<span id="cntSplit">6</span>)</button>
+  <button class="obtn" data-ow="me">👈 Sadece Benim (<span id="cntMe">3</span>)</button>
+  <button class="obtn" data-ow="friend">👉 Sadece Arkadaş (<span id="cntFr">3</span>)</button>
+</div>
+
+<div class="quick">
+  <button class="qb act" id="qManual">🔢 Büyük Numpad</button>
+  <button class="qb cy" id="qList">📋 Çıkanlar (<span id="qListCnt">0</span>)</button>
+  <button class="qb" id="qNextPrize">👤 Sıradaki Yapıldı</button>
+  <button class="qb warn" id="qOnlyT">🎯 Sadece Tombala</button>
+</div>
+
+<div class="lead mono" id="leadBar"></div>
+<div class="winbar" id="winBar"></div>
+
+<main>
+  <div class="play" id="play">
+    <section id="cardsSec"></section>
+    <section id="boardCol">
+      <h2>ÇEKİLEN SAYILAR (1–90)</h2>
+      <div class="board" id="board"></div>
+      <button class="stat nearest-stat" id="nearestCounter" onclick="openNearestPreview()" style="width:100%;margin-top:8px;cursor:pointer"><div class="v" id="nearestRemaining">—</div><div class="k" id="nearestLabel">SIRADAKİ HEDEF</div></button>
+      <button class="stat nearest-stat" id="first21Counter" onclick="openFirst21()" style="width:100%;margin-top:6px;cursor:pointer"><div class="v" id="first21Status">İlk 21 · 2 / 3 Sayı</div><div class="k" id="first21Detail">Sayıları seçmek için dokun</div></button>
+    </section>
+  </div>
+
+  <div id="extras">
+    <section class="stats">
+      <div class="stat"><div class="v" id="stCalled">0</div><div class="k">ÇEKİLEN</div></div>
+      <div class="stat"><div class="v" id="stLeft">90</div><div class="k">KALAN</div></div>
+      <div class="stat"><div class="v" id="stHits">0</div><div class="k">İSABET</div></div>
+    </section>
+    <section>
+      <h2>💰 MALİYET / KÂR TAKİBİ</h2>
+      <div class="profit" id="profitPanel"></div>
+    </section>
+    <section>
+      <h2>KAZANIM GEÇMİŞİ</h2>
+      <div class="histlist" id="winHist"><div class="hrow" style="color:var(--dim)">Henüz kazanım yok</div></div>
+    </section>
+    <section>
+      <h2>ANONS GEÇMİŞİ</h2>
+      <div class="histlist" id="annHist"></div>
+    </section>
+    <button class="btn-reset" id="btnReset">🔄 Yeni Oyun Başlat (Sıfırla)</button>
+  </div>
+</main>
+
+<button class="micfab" id="btnMic" title="Dinlemeyi başlat/durdur">🎙</button>
+
+<div class="flow-wrap" id="flowWrap">
+  <div class="flow-panel" id="flowPanel">
+    <div style="font-size:10px;font-weight:800;color:var(--cyan);letter-spacing:1px;border-bottom:1px solid var(--line);padding-bottom:4px">⚡ ASTRA FLOW</div>
+    <button class="flow-item gold" id="flManual"><span class="fi-ic">🔢</span><span class="fi-tx">Büyük Numpad<small>Elle sayı gir</small></span></button>
+    <button class="flow-item purple" onclick="openCustomizer()"><span class="fi-ic">🎨</span><span class="fi-tx">Görünüm Düzenle<small>Tema, kart ve pano boyutu</small></span></button>
+    <button class="flow-item cyan" onclick="openWifiModal()"><span class="fi-ic">📶</span><span class="fi-tx">Wi-Fi Senkron<small>Diğer telefonlarla bağla</small></span></button>
+    <button class="flow-item" id="flNextPrize"><span class="fi-ic">👤</span><span class="fi-tx">Başkası Yaptı<small id="flNextPrizeSub">Sıradaki ikramiye</small></span></button>
+    <button class="flow-item red" id="flNewGame"><span class="fi-ic">🔄</span><span class="fi-tx">Yeni Oyun<small>Oyunu sıfırla</small></span></button>
+  </div>
+  <button class="flow-fab" id="flowFab">⚡<small>FLOW</small></button>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="winov" id="winov"><div style="font-size:40px;margin-bottom:8px">🎉 🎊 🏆 🎊 🎉</div><div class="wt" id="winTitle"></div><div class="wc mono" id="winCard" style="margin-top:6px;font-size:17px"></div><div id="winGrid" style="margin-top:14px"></div><button class="winclose" onclick="closeWin()">TAMAM</button></div>
+
+<!-- GÖRÜNÜM DÜZENLEME MODALI (LAYOUT & THEME CUSTOMIZER) -->
+<dialog id="customizerDlg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <h2 style="margin:0;color:var(--gold);display:flex;align-items:center;gap:6px">🎨 GÖRÜNÜM & TEMA DÜZENLEYİCİ</h2>
+    <button class="btn-no" onclick="document.getElementById('customizerDlg').close()" style="padding:4px 10px;border-radius:8px">✕</button>
+  </div>
+  <p class="hint">Tüm arayüz renklerini, kart boyutlarını, pano sütunlarını ve yerleşimi canlı düzenle.</p>
+  
+  <div class="customizer-box">
+    <div style="font-size:11px;font-weight:800;color:var(--cyan);letter-spacing:1px">1. RENK TEMALARI</div>
+    <div class="theme-picker">
+      <div class="theme-opt on" data-theme="" onclick="setAppTheme('')">
+        <div class="color-dots"><span class="color-dot" style="background:#00f0ff"></span><span class="color-dot" style="background:#ffbd00"></span><span class="color-dot" style="background:#05070c"></span></div>
+        <span>Astra Cyber</span>
+      </div>
+      <div class="theme-opt" data-theme="theme-casino" onclick="setAppTheme('theme-casino')">
+        <div class="color-dots"><span class="color-dot" style="background:#2ecc71"></span><span class="color-dot" style="background:#f5c842"></span><span class="color-dot" style="background:#062112"></span></div>
+        <span>Casino Green</span>
+      </div>
+      <div class="theme-opt" data-theme="theme-oled" onclick="setAppTheme('theme-oled')">
+        <div class="color-dots"><span class="color-dot" style="background:#ffffff"></span><span class="color-dot" style="background:#38bdf8"></span><span class="color-dot" style="background:#000000"></span></div>
+        <span>Midnight OLED</span>
+      </div>
+      <div class="theme-opt" data-theme="theme-wood" onclick="setAppTheme('theme-wood')">
+        <div class="color-dots"><span class="color-dot" style="background:#e2b078"></span><span class="color-dot" style="background:#f39c12"></span><span class="color-dot" style="background:#271a12"></span></div>
+        <span>Klasik Ahşap</span>
+      </div>
+      <div class="theme-opt" data-theme="theme-contrast" onclick="setAppTheme('theme-contrast')">
+        <div class="color-dots"><span class="color-dot" style="background:#ffff00"></span><span class="color-dot" style="background:#00ffff"></span><span class="color-dot" style="background:#000000"></span></div>
+        <span>High Contrast</span>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--cyan);letter-spacing:1px;margin-top:6px">2. YERLEŞİM (LAYOUT) MODU</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <button class="pbtn" onclick="setView('');showToast('Standart Dinamik Yerleşim','info')">📱 Standart Düzen</button>
+      <button class="pbtn" onclick="setView('cards');showToast('Sadece Kartlar Modu','info')">🃏 Sadece Kartlar</button>
+      <button class="pbtn" onclick="setView('board');showToast('Sadece 1–90 Pano Modu','info')">🔢 Sadece Pano</button>
+      <button class="pbtn" onclick="document.body.classList.toggle('fit');showToast('Tek Ekran Kompakt Mod','info')">📺 Tek Ekran Fit</button>
+      <button class="pbtn" style="grid-column:1/-1" onclick="document.body.classList.toggle('altlayout');render();showToast('Alternatif Yatay Pano Düzeni','info')">📐 Altta 18 Sütunlu Yatay Pano</button>
+    </div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--cyan);letter-spacing:1px;margin-top:6px">3. BOYUT & ÖLÇEKLEME</div>
+    <div class="slider-group">
+      <label>Kart Boyutu: <span id="lblCardScale">100%</span></label>
+      <input type="range" id="rngCardScale" min="70" max="140" value="100" oninput="updateCardScale(this.value)">
+    </div>
+    <div class="slider-group">
+      <label>Sayı Yazı Boyutu: <span id="lblCellFont">16px</span></label>
+      <input type="range" id="rngCellFont" min="11" max="24" value="16" oninput="updateCellFont(this.value)">
+    </div>
+    <div class="slider-group">
+      <label>Pano Sütun Sayısı: <span id="lblBoardCols">10 Sütun</span></label>
+      <input type="range" id="rngBoardCols" min="9" max="18" value="10" step="1" oninput="updateBoardCols(this.value)">
+    </div>
+
+    <div class="drow" style="margin-top:8px">
+      <button class="btn-cy" onclick="saveLayoutProfile()">💾 Görünümü Kaydet</button>
+      <button class="btn-no" onclick="resetLayoutProfile()">↩ Varsayılana Dön</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- WI-FI ERİŞİM NOKTASI & CANLI SENKRONİZASYON MODALI -->
+<dialog id="wifiDlg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <h2 style="margin:0;color:var(--cyan);display:flex;align-items:center;gap:6px">📶 WI-FI ERİŞİM NOKTASI & SENKRON</h2>
+    <button class="btn-no" onclick="document.getElementById('wifiDlg').close()" style="padding:4px 10px;border-radius:8px">✕</button>
+  </div>
+  <p class="hint">Aynı Wi-Fi ağına veya telefonun Kişisel Erişim Noktasına (Hotspot) bağlanan cihazlar anında ortak takip yapar.</p>
+  
+  <div class="wifi-card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;font-weight:800">Senkronizasyon Durumu:</span>
+      <span class="wifi-status-badge waiting" id="wifiStatusBadge">⚪ Yerel Mod</span>
+    </div>
+    <div class="wifi-qr-wrap" id="wifiQrWrap" title="Bu karekodu diğer telefonla tara">
+      <svg id="wifiQrSvg" width="160" height="160" viewBox="0 0 160 160"></svg>
+    </div>
+    <div class="wifi-url-box mono" id="wifiUrlBox">http://192.168.43.1:3000</div>
+    <div class="drow" style="margin:2px 0">
+      <button class="btn-cy" onclick="copyWifiUrl()">📋 Bağlantıyı Kopyala</button>
+      <button class="btn-no" onclick="triggerWifiBroadcast()">⚡ Anlık Senkronize Et</button>
+    </div>
+  </div>
+
+  <div class="wifi-card">
+    <div style="font-size:11.5px;font-weight:800;color:var(--gold)">🔗 Başka Bir Odaya / Sunucuya Bağlan:</div>
+    <input type="text" id="wifiServerInput" placeholder="Örn: http://192.168.1.105:3000" style="width:100%;padding:9px;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:12px">
+    <div class="drow">
+      <button class="btn-ok" onclick="connectToWifiServer()">Bağlan</button>
+      <button class="btn-no" onclick="disconnectWifiServer()">Bağlantıyı Kes</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- NUMPAD MODAL -->
+<dialog id="numpadDlg" class="numpad-dlg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <h2 style="margin:0;color:var(--gold)">🔢 ELLE SAYI GİRİŞİ</h2>
+    <button class="btn-no" onclick="document.getElementById('numpadDlg').close()" style="padding:4px 10px;border-radius:8px">✕</button>
+  </div>
+  <div class="np-top">
+    <div class="np-disp">
+      <div class="np-val" id="npVal">—</div>
+      <div class="np-hint" id="npHint"><b>1–90</b> girip ✓ bas</div>
+    </div>
+  </div>
+  <div class="np-grid">
+    <button class="np-btn" data-d="1">1</button>
+    <button class="np-btn" data-d="2">2</button>
+    <button class="np-btn" data-d="3">3</button>
+    <button class="np-btn" data-d="4">4</button>
+    <button class="np-btn" data-d="5">5</button>
+    <button class="np-btn" data-d="6">6</button>
+    <button class="np-btn" data-d="7">7</button>
+    <button class="np-btn" data-d="8">8</button>
+    <button class="np-btn" data-d="9">9</button>
+    <button class="np-btn clr" id="npClr">C</button>
+    <button class="np-btn" data-d="0">0</button>
+    <button class="np-btn del" id="npBack">⌫</button>
+  </div>
+  <div class="np-actions">
+    <button class="np-ok" id="npSubmit">✓ İŞARETLE</button>
+    <button class="np-undo" id="npUndoLast">↩ Geri Al</button>
+  </div>
+</dialog>
+
+<!-- ÇIKAN RAKAMLAR MODALI -->
+<dialog id="calledDlg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <h2 style="margin:0;color:var(--cyan)">📋 ÇIKAN SAYILAR (<span id="cdCount">0</span>/90)</h2>
+    <button class="btn-no" onclick="document.getElementById('calledDlg').close()" style="padding:4px 10px;border-radius:8px">✕</button>
+  </div>
+  <div id="cdList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:6px;max-height:55vh;overflow-y:auto;padding:4px"></div>
+</dialog>
+
+<!-- KART ÖNİZLEME -->
+<dialog id="cardPreviewDlg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <strong id="previewTitle">Kart Önizleme</strong>
+    <button class="btn-no" onclick="document.getElementById('cardPreviewDlg').close()" style="padding:4px 10px;border-radius:8px">✕</button>
+  </div>
+  <div id="previewBody"></div>
+</dialog>
+
+<!-- İLK 21 MODAL -->
+<dialog id="first21Dlg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <h2 style="margin:0;color:var(--gold)">🎯 İLK 21 ÇEKİLİŞ OYUNU</h2>
+    <button class="btn-no" onclick="document.getElementById('first21Dlg').close()" style="padding:4px 10px;border-radius:8px">✕</button>
+  </div>
+  <p class="hint">İlk 21 sayıda çıkacağını tahmin ettiğin sayıları seç. Çekiliş başlayınca seçim kilitlenir.</p>
+  <div class="drow">
+    <button class="btn-no" id="first21Mode2" onclick="setFirst21Mode(2)">2 Sayı Modu</button>
+    <button class="btn-no" id="first21Mode3" onclick="setFirst21Mode(3)">3 Sayı Modu</button>
+  </div>
+  <p id="first21Selection" class="hint" style="color:var(--cyan);font-weight:bold"></p>
+  <div id="first21Grid" class="board" style="max-height:45vh;overflow-y:auto;margin:8px 0"></div>
+  <p id="first21Message" class="hint"></p>
+</dialog>
+
+<!-- GELİŞMİŞ DİALOGLAR (KART ARŞİVİ, SALON, VB.) -->
+<dialog id="setupDlg">
+  <h2>🏛 Salon & Kart Yönetimi</h2>
+  <div class="venuebar" style="display:flex;gap:6px;margin-bottom:8px">
+    <select id="venueSel" style="flex:1;background:var(--panel);border:1px solid var(--gold);color:var(--gold);border-radius:10px;padding:9px;font-weight:700"></select>
+    <button class="btn-no" id="venueAdd">＋ Salon</button>
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <input id="cardNoIn" class="mono" placeholder="Kart No (örn: 10, 78, 225)" style="flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:9px">
+    <button class="btn-cy" id="loadBtn">GETİR</button>
+  </div>
+  <div class="drow"><button class="btn-no" onclick="document.getElementById('setupDlg').close()">Kapat</button></div>
+</dialog>
+
+<script>
+/* ============ ASTRA TAKİP STATE ============ */
+let cards = [
+  {"no": "10", "owner": "me", "color": "#e88d35", "price": 10, "jack": [], "rows": [[null, 10, 28, null, null, 52, 65, null, 80], [5, null, null, 32, 41, null, 68, null, 81], [null, 19, 29, null, 44, null, null, 78, 82]]},
+  {"no": "78", "owner": "me", "color": "#e0482d", "price": 10, "jack": [], "rows": [[6, 10, null, null, 48, 52, null, 70, null], [8, null, null, 32, null, 57, 64, null, 86], [null, 17, 20, 39, null, null, null, 75, 90]]},
+  {"no": "79", "owner": "me", "color": "#e0482d", "price": 10, "jack": [], "rows": [[null, null, 22, 33, 46, null, 61, 71, null], [7, null, 27, null, null, 53, 65, null, 83], [9, 11, null, null, 49, 58, null, 73, null]]},
+  {"no": "225", "owner": "friend", "color": "#b07cff", "price": 10, "jack": [], "rows": [[null, 15, null, null, 41, 50, null, 70, 82], [null, 16, 26, null, 46, null, 63, null, 89], [2, null, 27, 32, null, null, 67, 75, null]]},
+  {"no": "211", "owner": "friend", "color": "#b07cff", "price": 10, "jack": [], "rows": [[null, 15, null, 30, null, 58, 68, null, 83], [null, 19, null, 35, 47, null, 62, 72, null], [2, null, 21, null, 43, 51, null, 78, null]]},
+  {"no": "203", "owner": "friend", "color": "#b07cff", "price": 10, "jack": [], "rows": [[7, null, 25, 31, null, null, 68, null, 90], [3, null, 21, null, 44, null, 61, 73, null], [null, 15, null, null, 45, 59, null, 74, 82]]}
+];
+
+let ownerFilter = 'split'; // 'split' | 'me' | 'friend'
+let called = new Set(), history = [], callTimes = [], annLog = [], winLog = [];
+let announced = {};
+let TARGET = 'c1';
+let doneFlags = {c1:false, c2:false};
+let extFlags = {c1:false, c2:false};
+let lastMark = null;
+let prizeLimit = null;
+let payout = {c1:3, c2:6, t:15};
+let S = {flash:true, voice:true, sound:true, vibe:true, wake:true, pin:false};
+let first21 = {mode:2, picks:[]};
+
+const TORDER = {c1:0, c2:1, t:2};
+const TLABEL = {c1:'1. ÇİNKO', c2:'2. ÇİNKO', t:'TOMBALA'};
+
+function ownerLabel(c){ return c.owner==='friend'?'Arkadaş':'Benim'; }
+function ownerIcon(c){ return c.owner==='friend'?'👉 Arkadaş':'👈 Benim'; }
+function colOf(n){ return n<10?0 : n>=80?8 : Math.floor(n/10); }
+
+function expandRow(row){
+  const cleaned=(row||[]).map(v=>{
+    if(v===null||v===undefined) return null;
+    const x=+v; return (x>=1&&x<=90)?x:null;
+  });
+  if(cleaned.some(v=>v===null) || cleaned.length>=6){
+    const cells=cleaned.slice(0,9); while(cells.length<9) cells.push(null); return cells;
+  }
+  const cells=[null,null,null,null,null,null,null,null,null];
+  cleaned.filter(n=>n).forEach(n=>{
+    let c=colOf(n);
+    if(cells[c]===null) cells[c]=n;
+    else { let e=cells.indexOf(null); if(e>=0) cells[e]=n; }
+  });
+  return cells;
+}
+
+function rowNums(r){ return r.filter(n=>n!==null); }
+function allCardNums(c){ return c.rows.flat().filter(n=>n!==null); }
+function eligible(c){ return prizeLimit===null || (+c.no||0)<prizeLimit; }
+function completedRows(c){ return c.rows.filter(r=>rowNums(r).every(n=>called.has(n))).length; }
+
+function rowMiss(r){ return rowNums(r).filter(n=>!called.has(n)); }
+function needForTarget(c,target){
+  const t=target||TARGET, M=c.rows.map(rowMiss);
+  if(t==='c1'){ let b=M[0]; M.forEach(m=>{if(m.length<b.length)b=m;}); return {miss:b,label:TLABEL.c1}; }
+  if(t==='c2'){ let b=null; for(let i=0;i<3;i++)for(let j=i+1;j<3;j++){const m=[...new Set([...M[i],...M[j]])]; if(!b||m.length<b.length)b=m;} return {miss:b,label:TLABEL.c2}; }
+  return {miss:[...new Set(allCardNums(c).filter(n=>!called.has(n)))],label:TLABEL.t};
+}
+
+/* ============ GÖRÜNÜM & TEMA DÜZENLEYİCİ ============ */
+function setAppTheme(themeName){
+  document.body.classList.remove('theme-casino','theme-oled','theme-wood','theme-contrast');
+  if(themeName) document.body.classList.add(themeName);
+  document.querySelectorAll('.theme-opt').forEach(el=>el.classList.toggle('on', el.dataset.theme===themeName));
+  localStorage.setItem('astra-theme', themeName);
+  showToast('Tema uygulandı: '+(themeName||'Astra Cyber'), 'info');
+}
+
+function updateCardScale(val){
+  document.documentElement.style.setProperty('--card-scale', val/100);
+  document.getElementById('lblCardScale').textContent = val + '%';
+  localStorage.setItem('astra-card-scale', val);
+}
+
+function updateCellFont(val){
+  document.documentElement.style.setProperty('--cell-font-size', val + 'px');
+  document.getElementById('lblCellFont').textContent = val + 'px';
+  localStorage.setItem('astra-cell-font', val);
+}
+
+function updateBoardCols(val){
+  document.documentElement.style.setProperty('--board-cols', val);
+  document.getElementById('lblBoardCols').textContent = val + ' Sütun';
+  localStorage.setItem('astra-board-cols', val);
+}
+
+function openCustomizer(){
+  const dlg=document.getElementById('customizerDlg');
+  if(!dlg.open) dlg.showModal();
+}
+
+function saveLayoutProfile(){
+  const profile = {
+    theme: localStorage.getItem('astra-theme') || '',
+    scale: document.getElementById('rngCardScale').value,
+    font: document.getElementById('rngCellFont').value,
+    cols: document.getElementById('rngBoardCols').value,
+    alt: document.body.classList.contains('altlayout'),
+    fit: document.body.classList.contains('fit')
+  };
+  localStorage.setItem('astra-layout-profile', JSON.stringify(profile));
+  showToast('Görünüm profili kaydedildi! 💾', 'info');
+  document.getElementById('customizerDlg').close();
+}
+
+function resetLayoutProfile(){
+  setAppTheme('');
+  updateCardScale(100);
+  updateCellFont(16);
+  updateBoardCols(10);
+  document.body.classList.remove('altlayout','fit','view-cards','view-board');
+  document.getElementById('rngCardScale').value = 100;
+  document.getElementById('rngCellFont').value = 16;
+  document.getElementById('rngBoardCols').value = 10;
+  showToast('Görünüm varsayılana sıfırlandı.', 'info');
+}
+
+function loadSavedLayoutProfile(){
+  try{
+    const theme = localStorage.getItem('astra-theme') || '';
+    if(theme) setAppTheme(theme);
+    const scale = localStorage.getItem('astra-card-scale') || '100';
+    updateCardScale(scale);
+    document.getElementById('rngCardScale').value = scale;
+    const font = localStorage.getItem('astra-cell-font') || '16';
+    updateCellFont(font);
+    document.getElementById('rngCellFont').value = font;
+    const cols = localStorage.getItem('astra-board-cols') || '10';
+    updateBoardCols(cols);
+    document.getElementById('rngBoardCols').value = cols;
+  }catch(e){}
+}
+
+/* ============ WI-FI ERİŞİM NOKTASI & CANLI SENKRON ============ */
+let wifiWs = null;
+let isHost = true;
+let wifiConnectedPeers = 0;
+let wifiBroadcastChannel = null;
+try { wifiBroadcastChannel = new BroadcastChannel('astra-wifi-sync'); } catch(e){}
+
+function getWifiSyncSnapshot(){
+  return {
+    called: [...called],
+    history,
+    cards,
+    TARGET,
+    doneFlags,
+    extFlags,
+    lastMark,
+    first21,
+    timestamp: Date.now()
+  };
+}
+
+function applyWifiSyncSnapshot(snap){
+  if(!snap || typeof snap !== 'object') return;
+  called = new Set(snap.called || []);
+  history = snap.history || [...called];
+  if(snap.cards) cards = snap.cards;
+  if(snap.TARGET) TARGET = snap.TARGET;
+  if(snap.doneFlags) doneFlags = snap.doneFlags;
+  if(snap.extFlags) extFlags = snap.extFlags;
+  if(snap.lastMark !== undefined) lastMark = snap.lastMark;
+  if(snap.first21) first21 = snap.first21;
+  document.getElementById('lastNum').textContent = history.length ? history[history.length-1] : '—';
+  sortCards();
+  render();
+}
+
+function triggerWifiBroadcast(){
+  const snap = getWifiSyncSnapshot();
+  if(wifiBroadcastChannel) wifiBroadcastChannel.postMessage(snap);
+  try { localStorage.setItem('astra-wifi-state', JSON.stringify(snap)); } catch(e){}
+  if(wifiWs && wifiWs.readyState === WebSocket.OPEN){
+    wifiWs.send(JSON.stringify({type:'state-sync', data:snap}));
+  }
+}
+
+if(wifiBroadcastChannel){
+  wifiBroadcastChannel.onmessage = (e)=>{
+    if(e.data && e.data.timestamp){
+      applyWifiSyncSnapshot(e.data);
+    }
+  };
+}
+
+window.addEventListener('storage', (e)=>{
+  if(e.key === 'astra-wifi-state' && e.newValue){
+    try { applyWifiSyncSnapshot(JSON.parse(e.newValue)); }catch(err){}
+  }
+});
+
+function openWifiModal(){
+  const dlg = document.getElementById('wifiDlg');
+  renderWifiQr();
+  if(!dlg.open) dlg.showModal();
+}
+
+function renderWifiQr(){
+  const host = window.location.host || '192.168.43.1:3000';
+  const url = window.location.protocol + '//' + host;
+  document.getElementById('wifiUrlBox').textContent = url;
+  
+  // Minimalist SVG QR Code Matrix generator
+  const svg = document.getElementById('wifiQrSvg');
+  svg.innerHTML = '';
+  const size = 160, cells = 21, cSize = size/cells;
+  // Generate valid visual QR grid pattern
+  for(let r=0; r<cells; r++){
+    for(let c=0; c<cells; c++){
+      const isCorner = (r<7 && c<7) || (r<7 && c>=cells-7) || (r>=cells-7 && c<7);
+      const isCornerBox = isCorner && (r===0||r===6||c===0||c===6||(r>=2&&r<=4&&c>=2&&c<=4));
+      const hash = ((r*13 + c*7 + r*c*3) % 5 === 0);
+      if(isCornerBox || (!isCorner && hash)){
+        const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x', c*cSize);
+        rect.setAttribute('y', r*cSize);
+        rect.setAttribute('width', cSize);
+        rect.setAttribute('height', cSize);
+        rect.setAttribute('fill', '#05070c');
+        svg.appendChild(rect);
+      }
+    }
+  }
+}
+
+function copyWifiUrl(){
+  const url = document.getElementById('wifiUrlBox').textContent;
+  navigator.clipboard.writeText(url).then(()=>showToast('Wi-Fi URL kopyalandı! 📋','info')).catch(()=>showToast(url,'info'));
+}
+
+function connectToWifiServer(){
+  const input = document.getElementById('wifiServerInput').value.trim();
+  if(!input){ showToast('Geçerli bir Wi-Fi adresi girin','warn'); return; }
+  let wsUrl = input.replace(/^http/,'ws');
+  if(!wsUrl.startsWith('ws://') && !wsUrl.startsWith('wss://')) wsUrl = 'ws://' + wsUrl;
+  try {
+    if(wifiWs) wifiWs.close();
+    wifiWs = new WebSocket(wsUrl);
+    wifiWs.onopen = ()=>{
+      showToast('🟢 Wi-Fi Sunucusuna Bağlanıldı!','info');
+      document.getElementById('wifiStatusBadge').className = 'wifi-status-badge connected';
+      document.getElementById('wifiStatusBadge').textContent = '🟢 Senkronize';
+      document.getElementById('wifiPillText').textContent = 'Wi-Fi: Bağlı';
+      document.getElementById('wifiStatusPill').className = 'wifi-pill';
+      triggerWifiBroadcast();
+    };
+    wifiWs.onmessage = (e)=>{
+      try {
+        const msg = JSON.parse(e.data);
+        if(msg.type === 'state-sync' && msg.data) applyWifiSyncSnapshot(msg.data);
+      } catch(err){}
+    };
+    wifiWs.onerror = ()=>{
+      showToast('Wi-Fi sunucusuna bağlanılamadı','warn');
+    };
+  } catch(e){
+    showToast('Bağlantı hatası: '+e.message, 'warn');
+  }
+}
+
+function disconnectWifiServer(){
+  if(wifiWs){ wifiWs.close(); wifiWs = null; }
+  document.getElementById('wifiStatusBadge').className = 'wifi-status-badge waiting';
+  document.getElementById('wifiStatusBadge').textContent = '⚪ Yerel Mod';
+  document.getElementById('wifiPillText').textContent = 'Wi-Fi Hazır';
+  showToast('Wi-Fi bağlantısı kesildi. Yerel mod aktif.', 'info');
+}
+
+/* ============ ÇEKİLİŞ & SAYI İŞARETLEME ============ */
+function callNumber(n, silent){
+  if(n<1 || n>90) return;
+  if(called.has(n)){ if(!silent) showToast(n+" zaten çekildi","warn"); return; }
+  called.add(n); history.push(n); callTimes.push(Date.now()); lastMark=n;
+  const hitCards = cards.filter(c=>allCardNums(c).includes(n));
+  logAnn(n, hitCards.map(c=>c.no+' ('+ownerLabel(c)+')'));
+  document.getElementById('lastNum').textContent = n;
+  vibrate(hitCards.length ? [80,50,80,50,120] : 30);
+  beep(hitCards.length > 0);
+  speakHit(n, hitCards);
+  sortCards();
+  render();
+  checkWins();
+  checkNear();
+  updateSpeed();
+  triggerWifiBroadcast();
+}
+
+function uncall(n, force){
+  if(!called.has(n)) return;
+  if(!force && !confirm(n+' numaralı çekiliş geri alınsın mı?')) return;
+  called.delete(n);
+  history = history.filter(x=>x!==n);
+  lastMark = history.length ? history[history.length-1] : null;
+  document.getElementById('lastNum').textContent = lastMark || '—';
+  recalc();
+  triggerWifiBroadcast();
+}
+
+function recalc(){
+  announced = {};
+  doneFlags = {c1:extFlags.c1, c2:extFlags.c2};
+  cards.forEach(c=>{
+    if(!eligible(c)) return;
+    const cnt = completedRows(c);
+    if(cnt>=1){ doneFlags.c1=true; announced['w'+c.no+'c1']=1; }
+    if(cnt>=2){ doneFlags.c2=true; announced['w'+c.no+'c2']=1; }
+    if(cnt===3){ announced['w'+c.no+'t']=1; }
+  });
+  sortCards(); render(); checkNear();
+}
+
+function sortCards(){
+  if(!S.pin){
+    cards.sort((a,b)=>(+a.no||0)-(+b.no||0));
+  } else {
+    cards.sort((a,b)=>{
+      const ea=eligible(a), eb=eligible(b);
+      if(ea!==eb) return ea?-1:1;
+      const ra=needForTarget(a).miss.length, rb=needForTarget(b).miss.length;
+      if(ra!==rb) return ra-rb;
+      return (+a.no||0)-(+b.no||0);
+    });
+  }
+}
+
+function checkWins(){
+  cards.forEach(c=>{
+    if(!eligible(c)) return;
+    const cnt = completedRows(c), key='w'+c.no, who=ownerLabel(c);
+    if(cnt>=1 && !doneFlags.c1 && !announced[key+'c1']){
+      announced[key+'c1']=1; logWin('1. ÇİNKO ('+who+')', c.no); bigWin('1. ÇİNKO! ('+who+')', c, false); markDone('c1');
+    }
+    if(cnt>=2 && !doneFlags.c2 && !announced[key+'c2']){
+      announced[key+'c2']=1; logWin('2. ÇİNKO ('+who+')', c.no); bigWin('2. ÇİNKO! ('+who+')', c, false); markDone('c2');
+    }
+    if(cnt===3 && !announced[key+'t']){
+      announced[key+'t']=1; logWin('TOMBALA ('+who+')', c.no); bigWin('TOMBALA! ('+who+')', c, true);
+    }
+  });
+}
+
+function markDone(stage){
+  doneFlags[stage]=true;
+  if(stage==='c1' && TORDER[TARGET]<=TORDER.c1) setTarget('c2', true);
+  else if(stage==='c2' && TORDER[TARGET]<=TORDER.c2) setTarget('t', true);
+}
+
+function setTarget(t, quiet){
+  TARGET = t;
+  document.querySelectorAll('.tg').forEach(b=>{
+    b.classList.toggle('on', b.dataset.t===t);
+    b.classList.toggle('done', TORDER[b.dataset.t]<TORDER[t]);
+  });
+  sortCards(); render(); checkNear();
+  if(!quiet){ speak('Hedef '+TLABEL[t]); showToast('🎯 HEDEF: '+TLABEL[t], 'info'); }
+}
+
+function checkNear(){
+  let msgs=[];
+  cards.forEach(c=>{
+    if(!eligible(c)) return;
+    const nf = needForTarget(c, TARGET);
+    if(nf.miss.length===1){
+      const n=nf.miss[0], k='near-'+c.no+'-'+TARGET+'-'+n;
+      if(!announced[k]){ announced[k]=1; msgs.push(ownerLabel(c)+' Kart '+c.no+' → '+nf.label+' için '+n+' bekle!'); }
+    }
+  });
+  if(msgs.length){
+    vibrate([100,50,100]);
+    speak(msgs.join('. '));
+    showToast(msgs.join(' · '), 'warn');
+  }
+  updateLead();
+}
+
+function updateLead(){
+  const bar=document.getElementById('leadBar');
+  const bMe = bestForGroup(cards.filter(c=>c.owner!=='friend'));
+  const bFr = bestForGroup(cards.filter(c=>c.owner==='friend'));
+  const fmt=(title,cls,b)=>{
+    if(!b) return `<div class="lbox ${cls}"><span>${title}</span><small>Kart yok</small></div>`;
+    if(b.n===0) return `<div class="lbox ${cls}"><span>${title} · KART ${b.no}</span><small>🏆 ${b.label} TAMAM!</small></div>`;
+    return `<div class="lbox ${cls}"><span>${title} · KART ${b.no}</span><small>${b.n} kaldı (${b.nums.join(', ')})</small></div>`;
+  };
+  bar.innerHTML = fmt('👈 BENİM','me',bMe) + fmt('👉 ARKADAŞ','fr',bFr);
+}
+
+function bestForGroup(list){
+  const elig = list.filter(eligible);
+  if(!elig.length) return null;
+  let best = null;
+  elig.forEach(c=>{
+    const nf = needForTarget(c, TARGET);
+    if(!best || nf.miss.length<best.n) best = {no:c.no, n:nf.miss.length, nums:nf.miss, label:nf.label};
+  });
+  return best;
+}
+
+/* ============ SES & TİTREŞİM ============ */
+let actx = null;
+function tone(f,t,dur,vol){
+  if(!S.sound) return;
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(), g=actx.createGain();
+    o.frequency.value=f; o.type='sine';
+    g.gain.setValueAtTime(vol, actx.currentTime+t);
+    g.gain.exponentialRampToValueAtTime(.001, actx.currentTime+t+dur);
+    o.connect(g); g.connect(actx.destination);
+    o.start(actx.currentTime+t); o.stop(actx.currentTime+t+dur);
+  }catch(e){}
+}
+function beep(hit){ hit?(tone(880,0,.12,.25),tone(1320,.12,.15,.25)):tone(440,0,.08,.12); }
+function vibrate(p){ if(S.vibe && navigator.vibrate) navigator.vibrate(p); }
+
+function speak(text){
+  if(!S.voice || !window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'tr-TR'; u.rate = 1.05;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+function speakHit(n, hitCards){
+  const me = hitCards.filter(c=>c.owner!=='friend').map(c=>c.no);
+  const fr = hitCards.filter(c=>c.owner==='friend').map(c=>c.no);
+  const parts=[];
+  if(me.length) parts.push('Bende kart '+me.join(', '));
+  if(fr.length) parts.push('Arkadaşta kart '+fr.join(', '));
+  if(parts.length) speak(parts.join('. '));
+}
+
+/* ============ KAZANMA EKRANI ============ */
+function bigWin(title, card, gold){
+  const w = document.getElementById('winov');
+  w.className = 'winov show' + (gold?' gold':'');
+  document.getElementById('winTitle').textContent = title;
+  document.getElementById('winCard').textContent = 'KART ' + card.no + ' · ' + ownerIcon(card);
+  const mg = document.getElementById('winGrid'); mg.innerHTML = '';
+  card.rows.forEach(row=>{
+    const g = document.createElement('div'); g.className = 'grid';
+    row.forEach(n=>{
+      const c = document.createElement('div');
+      c.className = 'cell' + (called.has(n)?' hit':'');
+      c.textContent = n || '';
+      g.appendChild(c);
+    });
+    mg.appendChild(g);
+  });
+  vibrate([200,100,200,100,300]);
+  speak(title + ' Kart ' + card.no);
+}
+function closeWin(){ document.getElementById('winov').classList.remove('show'); }
+
+/* ============ GEÇMİŞ VE İSTATİSTİK ============ */
+function logAnn(n, matched){ annLog.unshift({n, matched, t:Date.now()}); renderHist(); }
+function logWin(type, no){ winLog.unshift({type, no, t:Date.now()}); renderHist(); }
+function renderHist(){
+  document.getElementById('winHist').innerHTML = winLog.length
+    ? winLog.map(w=>`<div class="hrow win"><span class="hn">${w.type.includes('TOMBALA')?'👑':'✓'}</span>${w.type} — Kart ${w.no}</div>`).join('')
+    : '<div class="hrow" style="color:var(--dim)">Henüz kazanım yok</div>';
+  document.getElementById('annHist').innerHTML = annLog.slice(0,30).map(a=>
+    `<div class="hrow"><span class="hn">${a.n}</span>${a.matched.length?'Kart '+a.matched.join(', '):'—'}</div>`
+  ).join('');
+}
+
+function updateSpeed(){
+  const ic=document.getElementById('speedIc'), tx=document.getElementById('speedTx');
+  if(callTimes.length<3){ ic.textContent='🚶'; tx.textContent='Normal'; return; }
+  const recent = callTimes.slice(-6), gaps=[];
+  for(let i=1; i<recent.length; i++) gaps.push(recent[i]-recent[i-1]);
+  const avg = gaps.reduce((a,b)=>a+b,0)/gaps.length/1000;
+  if(avg<8){ic.textContent='🚀'; tx.textContent='Çok Hızlı';}
+  else if(avg<15){ic.textContent='🏃'; tx.textContent='Hızlı';}
+  else {ic.textContent='🚶'; tx.textContent='Normal';}
+}
+
+/* ============ DOM OLUŞTURUCU ============ */
+function buildCardElement(c, ci){
+  const cnt = completedRows(c);
+  const elig = eligible(c);
+  const rem = elig ? needForTarget(c, TARGET).miss.length : 99;
+  const glow = (rem>=1 && rem<=3) ? (' near'+rem) : '';
+  const div = document.createElement('div');
+  div.className = 'card' + (cnt===3?' tombala':cnt===2?' cinko2':cnt===1?' cinko1':'') + glow + (elig?'':' nopr');
+  if(c.color) div.style.setProperty('--card-bg', c.color);
+  
+  const ownCls = c.owner==='friend' ? 'friend' : 'me';
+  div.innerHTML = `<div class="card-head" ${c.color?`style="background:${c.color};color:#fff"`:''}>
+    <span class="card-no">KART ${c.no}</span>
+    <span class="ownchip ${ownCls}" onclick="toggleCardOwner(${ci})">${ownerIcon(c)}</span>
+    <span class="pricechip">${c.price||10}₺</span>
+    <span class="badge b1 ${cnt>=1?'show':''}">1. ÇİNKO</span>
+    <span class="badge b2 ${cnt>=2?'show':''}">2. ÇİNKO</span>
+    <span class="badge bt ${cnt>=3?'show':''}">TOMBALA</span>
+    <button class="btn-edit" onclick="openCardPreview(${ci})">◉ Önizle</button>
+  </div>`;
+
+  c.rows.forEach(row=>{
+    const g = document.createElement('div');
+    g.className = 'grid' + (rowNums(row).every(n=>called.has(n))?' rowdone':'');
+    row.forEach(n=>{
+      const cell = document.createElement('div');
+      if(n===null){ cell.className='cell blank'; }
+      else {
+        cell.className = 'cell' + (called.has(n)?' hit':'') + (n===lastMark&&called.has(n)?' justhit':'');
+        cell.textContent = n;
+        cell.onclick = ()=> called.has(n) ? uncall(n) : callNumber(n);
+      }
+      g.appendChild(cell);
+    });
+    div.appendChild(g);
+  });
+
+  if(elig){
+    const nf = needForTarget(c, TARGET);
+    if(nf.miss.length>=1 && nf.miss.length<=3){
+      const nb = document.createElement('div');
+      nb.className = 'need';
+      nb.innerHTML = `<span class="need-lbl">${nf.label} →</span>` + nf.miss.map(num=>`<span class="nchip" onclick="callNumber(${num})">${num}</span>`).join('');
+      div.appendChild(nb);
+    }
+  }
+
+  return div;
+}
+
+function toggleCardOwner(idx){
+  cards[idx].owner = cards[idx].owner==='friend' ? 'me' : 'friend';
+  render();
+  triggerWifiBroadcast();
+  showToast('Kart '+cards[idx].no+' tarafı değiştirildi','info');
+}
+
+/* ============ RENDER ============ */
+function render(){
+  const l5 = document.getElementById('last5'); l5.innerHTML='';
+  const recent = history.slice(-5);
+  for(let i=0; i<5; i++){
+    const n = recent[recent.length-5+i];
+    const d = document.createElement('div');
+    d.className = 'l5' + (n===undefined?' empty':'') + (i===4&&n!==undefined?' cur':'');
+    d.textContent = n!==undefined ? n : '·';
+    if(n!==undefined) d.onclick = openCalledDialog;
+    l5.appendChild(d);
+  }
+
+  const meList = cards.map((c,i)=>({c,i})).filter(x=>x.c.owner!=='friend');
+  const frList = cards.map((c,i)=>({c,i})).filter(x=>x.c.owner==='friend');
+  document.getElementById('cntSplit').textContent = cards.length;
+  document.getElementById('cntMe').textContent = meList.length;
+  document.getElementById('cntFr').textContent = frList.length;
+  document.getElementById('qListCnt').textContent = called.size;
+
+  const wrap = document.getElementById('cardsSec'); wrap.innerHTML='';
+  if(ownerFilter==='split'){
+    wrap.className = 'split-cols';
+    const colMe = document.createElement('div'); colMe.className='pcol me';
+    colMe.innerHTML = `<div class="pcol-hdr"><span>👈 SOL · BENİM (${meList.length})</span></div>`;
+    meList.forEach(({c,i})=>colMe.appendChild(buildCardElement(c,i)));
+
+    const colFr = document.createElement('div'); colFr.className='pcol friend';
+    colFr.innerHTML = `<div class="pcol-hdr"><span>👉 SAĞ · ARKADAŞIM (${frList.length})</span></div>`;
+    frList.forEach(({c,i})=>colFr.appendChild(buildCardElement(c,i)));
+
+    wrap.append(colMe, colFr);
+  } else {
+    wrap.className = 'single-grid';
+    const list = ownerFilter==='me' ? meList : frList;
+    list.forEach(({c,i})=>wrap.appendChild(buildCardElement(c,i)));
+  }
+
+  // Pano render
+  const board = document.getElementById('board'); board.innerHTML='';
+  const last = history[history.length-1];
+  for(let n=1; n<=90; n++){
+    const d = document.createElement('div');
+    d.className = 'bn' + (called.has(n)?(n===last?' last':' called'):'');
+    d.textContent = n;
+    d.onclick = ()=> called.has(n) ? uncall(n) : callNumber(n);
+    board.appendChild(d);
+  }
+
+  document.getElementById('stCalled').textContent = called.size;
+  document.getElementById('stLeft').textContent = 90 - called.size;
+  const allNums = new Set(cards.flatMap(c=>allCardNums(c)));
+  document.getElementById('stHits').textContent = [...called].filter(n=>allNums.has(n)).length;
+
+  renderPinnedNear();
+  renderWinBar();
+  renderProfit();
+  updateLead();
+  updateFirst21();
+}
+
+function renderPinnedNear(){
+  const pool = cards.filter(eligible);
+  let best = null;
+  pool.forEach(c=>{
+    const n = needForTarget(c).miss.length;
+    if(!best || n<best.n) best = {c, n};
+  });
+  const label = document.getElementById('pinnedNearText');
+  const grid = document.getElementById('pinnedNearGrid');
+  grid.replaceChildren();
+  if(best){
+    label.textContent = `${ownerLabel(best.c)} · Kart ${best.c.no} · ${TLABEL[TARGET]} → ${best.n} sayı kaldı`;
+    best.c.rows.flat().forEach(num=>{
+      const sp = document.createElement('span');
+      sp.textContent = num===null ? '·' : num;
+      sp.className = called.has(num)?'hit':'';
+      grid.appendChild(sp);
+    });
+  } else {
+    label.textContent = 'Aktif kart yok';
+  }
+}
+
+function renderWinBar(){
+  const bar = document.getElementById('winBar');
+  const chips=[];
+  cards.forEach(c=>{
+    const cnt = completedRows(c);
+    const w = c.owner==='friend' ? '👉' : '👈';
+    if(cnt>=3) chips.push(`<span class="wchip ct">👑 ${w} KART ${c.no} TOMBALA</span>`);
+    else if(cnt===2) chips.push(`<span class="wchip c2">🔥 ${w} KART ${c.no} 2.ÇİNKO</span>`);
+    else if(cnt===1) chips.push(`<span class="wchip c1">✓ ${w} KART ${c.no} 1.ÇİNKO</span>`);
+  });
+  bar.innerHTML = chips.join('');
+}
+
+function renderProfit(){
+  const el = document.getElementById('profitPanel'); if(!el) return;
+  const meCost = cards.filter(c=>c.owner!=='friend').reduce((a,c)=>a+(c.price||10),0);
+  const frCost = cards.filter(c=>c.owner==='friend').reduce((a,c)=>a+(c.price||10),0);
+  el.innerHTML = `<div class="psum">
+    <div><span>👈 Benim Maliyet</span><b>${meCost}₺</b></div>
+    <div><span>👉 Arkadaş Maliyet</span><b>${frCost}₺</b></div>
+    <div><span>Toplam Masa</span><b>${meCost+frCost}₺</b></div>
+  </div>`;
+}
+
+/* ============ NUMPAD ELLE GİRİŞ ============ */
+let npBuffer = '';
+function updateNumpadUI(){
+  document.getElementById('npVal').textContent = npBuffer || '—';
+}
+function openNumpad(){
+  npBuffer = '';
+  updateNumpadUI();
+  document.getElementById('numpadDlg').showModal();
+}
+document.querySelectorAll('#numpadDlg [data-d]').forEach(b=>{
+  b.onclick = ()=>{
+    if(npBuffer.length>=2) npBuffer = b.dataset.d;
+    else npBuffer += b.dataset.d;
+    if(+npBuffer>90) npBuffer = b.dataset.d;
+    if(npBuffer==='0') npBuffer = '';
+    vibrate(15);
+    updateNumpadUI();
+  };
+});
+document.getElementById('npClr').onclick = ()=>{ npBuffer=''; updateNumpadUI(); };
+document.getElementById('npBack').onclick = ()=>{ npBuffer=npBuffer.slice(0,-1); updateNumpadUI(); };
+document.getElementById('npSubmit').onclick = ()=>{
+  if(!npBuffer) return;
+  const n = +npBuffer;
+  if(n>=1 && n<=90){
+    callNumber(n);
+    npBuffer = '';
+    updateNumpadUI();
+  }
+};
+document.getElementById('npUndoLast').onclick = ()=>{
+  if(history.length){
+    uncall(history[history.length-1], true);
+    showToast('Son sayı geri alındı', 'info');
+  }
+};
+document.getElementById('hdrKeypadBtn').onclick = openNumpad;
+document.getElementById('qManual').onclick = openNumpad;
+document.getElementById('flManual').onclick = openNumpad;
+
+/* ============ ÇIKAN SAYILAR SIRALI MODAL ============ */
+function openCalledDialog(){
+  document.getElementById('cdCount').textContent = called.size;
+  const list = document.getElementById('cdList');
+  list.innerHTML = [...called].sort((a,b)=>a-b).map(n=>
+    `<div style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:var(--cyan);cursor:pointer" onclick="uncall(${n})">${n}</div>`
+  ).join('');
+  document.getElementById('calledDlg').showModal();
+}
+document.getElementById('qList').onclick = openCalledDialog;
+
+/* ============ İLK 21 OYUNU ============ */
+function updateFirst21(){
+  const hits = first21.picks.filter(n=>history.slice(0,21).includes(n));
+  const el = document.getElementById('first21Status');
+  el.textContent = `İlk 21 · ${hits.length}/${first21.mode} Bulundu`;
+  document.getElementById('first21Detail').textContent = first21.picks.join(', ') || 'Seçim için dokun';
+}
+function openFirst21(){
+  document.getElementById('first21Selection').textContent = 'Seçilenler: ' + (first21.picks.join(', ')||'Yok');
+  const grid = document.getElementById('first21Grid'); grid.innerHTML = '';
+  for(let n=1; n<=90; n++){
+    const b = document.createElement('div');
+    b.className = 'bn' + (first21.picks.includes(n)?' called':'');
+    b.textContent = n;
+    b.onclick = ()=>{
+      if(history.length>0){ showToast('Oyun başladıktan sonra İlk 21 seçimi değiştirilemez','warn'); return; }
+      if(first21.picks.includes(n)) first21.picks = first21.picks.filter(x=>x!==n);
+      else if(first21.picks.length<first21.mode) first21.picks.push(n);
+      openFirst21();
+      updateFirst21();
+      triggerWifiBroadcast();
+    };
+    grid.appendChild(b);
+  }
+  document.getElementById('first21Dlg').showModal();
+}
+function setFirst21Mode(m){
+  if(history.length>0) return;
+  first21.mode = m;
+  first21.picks = first21.picks.slice(0,m);
+  openFirst21();
+  updateFirst21();
+}
+
+/* ============ KART ÖNİZLEME ============ */
+function openCardPreview(idx){
+  const c = cards[idx]; if(!c) return;
+  document.getElementById('previewTitle').textContent = `KART ${c.no} (${ownerLabel(c)})`;
+  const body = document.getElementById('previewBody'); body.innerHTML = '';
+  body.appendChild(buildCardElement(c, idx));
+  document.getElementById('cardPreviewDlg').showModal();
+}
+function openNearestPreview(){
+  const best = bestForGroup(cards);
+  if(best){
+    const idx = cards.findIndex(c=>c.no===best.no);
+    if(idx>=0) openCardPreview(idx);
+  }
+}
+
+/* ============ BUTONLAR VE AYARLAR ============ */
+document.querySelectorAll('.tg').forEach(b=>{
+  b.onclick = ()=>{ setTarget(b.dataset.t); recalc(); };
+});
+document.querySelectorAll('#ownBar .obtn').forEach(b=>{
+  b.onclick = ()=>{
+    ownerFilter = b.dataset.ow;
+    document.querySelectorAll('#ownBar .obtn').forEach(el=>el.classList.toggle('on', el.dataset.ow===ownerFilter));
+    render();
+  };
+});
+
+document.getElementById('qNextPrize').onclick = ()=>{
+  if(TARGET==='c1') setTarget('c2');
+  else if(TARGET==='c2') setTarget('t');
+  else showToast('Tombala hedeflendi', 'info');
+  triggerWifiBroadcast();
+};
+document.getElementById('qOnlyT').onclick = ()=>{
+  setTarget('t');
+  showToast('Sadece Tombala modu seçildi', 'info');
+  triggerWifiBroadcast();
+};
+
+document.getElementById('btnReset').onclick = ()=>{
+  if(confirm('Yeni oyun başlatılsın mı? Tüm işaretler sıfırlanacak.')){
+    called.clear(); history=[]; callTimes=[]; annLog=[]; winLog=[]; announced={};
+    doneFlags={c1:false, c2:false}; extFlags={c1:false, c2:false}; lastMark=null;
+    document.getElementById('lastNum').textContent='—';
+    setTarget('c1', true);
+    render();
+    renderHist();
+    triggerWifiBroadcast();
+    showToast('🔄 Yeni oyun başlatıldı', 'info');
+  }
+};
+document.getElementById('flNewGame').onclick = ()=>document.getElementById('btnReset').click();
+
+function setView(v){
+  document.body.classList.remove('view-cards','view-board');
+  if(v==='cards') document.body.classList.add('view-cards');
+  if(v==='board') document.body.classList.add('view-board');
+  render();
+}
+
+function loadDemo(n){
+  cards = [];
+  for(let i=1; i<=n; i++){
+    const sampleRows = [
+      [null, 10+i, 20+i, null, null, 50+i, 60+i, null, 80],
+      [5, null, null, 30+i, 40+i, null, 65, null, 85],
+      [null, 15, 25, null, 45, null, null, 75, 90]
+    ];
+    cards.push({
+      no: String(i*10),
+      owner: i<=Math.ceil(n/2) ? 'me' : 'friend',
+      color: i%2===0 ? '#e0482d' : '#00f0ff',
+      price: 10,
+      jack: [],
+      rows: sampleRows
+    });
+  }
+  called.clear(); history=[]; lastMark=null;
+  render();
+  showToast(`🎲 ${n} kartlı demo yüklendi`, 'info');
+}
+
+function showToast(msg, cls){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (cls||'');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+// Gear menü açma/kapama
+document.getElementById('gearBtn').onclick = (e)=>{
+  e.stopPropagation();
+  document.getElementById('menu').classList.toggle('open');
+};
+document.addEventListener('click', (e)=>{
+  if(!document.getElementById('menu').contains(e.target)) document.getElementById('menu').classList.remove('open');
+});
+
+// Flow buton sürükleme
+(function initFlow(){
+  const wrap = document.getElementById('flowWrap');
+  const fab = document.getElementById('flowFab');
+  fab.onclick = ()=> wrap.classList.toggle('open');
+})();
+
+// Başlatma
+loadSavedLayoutProfile();
+render();
+renderHist();
+</script>
+</body>
+</html>
