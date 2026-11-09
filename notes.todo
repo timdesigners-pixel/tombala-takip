@@ -22,3 +22,5 @@
 ✔ 22: Wi-Fi üzerinden 3. bağlantıya izin verilsin ve çıkan rakamlar ekranda ilgili kartlara mevcut kart durumunu gösteren görsellere, animasyon ile yerleşsin takipçi kartı işaretleyebilsin. Bu sırada kart numaraları yanıp sönsün @done (26-11-09)
 ✔ 23: "C:\Users\pc\Pictures\Screenshots\Ekran görüntüsü 2026-11-09 053646.png" burdaki iki ayrı sahip yönetimi yerine dropdown ile sahip değiştirilebilsin. @done (26-11-09)
 ✔ 24: Github da yayınlama tamamlansın @done (26-11-09)
+✔ 25: Uygulama splash screen de takılı kalması sorunu çözüldü (otomatik kapanma & dokunarak anında geçiş) @done (26-11-09)
+26: slash screende koyu arka planda hareketli galaxyi  andıran noktalar halinde yıldızlar animasyon olarak yer alsın görsel oluşturup onayıma sun

@@ -419,12 +419,12 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.warn{border-color:var(--red);color:var(--red)}
 
-/* SPLASH SCREEN (MİNİMUM 4 SANİYE GÖRÜNÜR) */
+/* SPLASH SCREEN & GALAKSİ YILDIZ ANİMASYONU */
 #splashScreen{
   position:fixed;
   inset:0;
   z-index:9999;
-  background:radial-gradient(circle at 50% 38%, #0d1b3e 0%, #05070c 80%);
+  background:radial-gradient(ellipse at 50% 35%, #08132e 0%, #030611 60%, #010206 100%);
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -432,12 +432,102 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   padding:24px;
   text-align:center;
   user-select:none;
+  cursor:pointer;
+  overflow:hidden;
   transition:opacity .45s ease-out, visibility .45s ease-out;
 }
 #splashScreen.hide{
   opacity:0;
   visibility:hidden;
   pointer-events:none;
+}
+.galaxy-layer{
+  position:absolute;
+  inset:-100px -50px;
+  pointer-events:none;
+  z-index:1;
+}
+.galaxy-layer.stars1{
+  background-image: 
+    radial-gradient(1.8px 1.8px at 25px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.2px 2.2px at 60px 85px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 110px 45px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 170px 130px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.2px 2.2px at 240px 65px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 300px 160px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 350px 95px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(3.2px 3.2px at 385px 220px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 45px 250px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.4px 2.4px at 125px 290px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 215px 340px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(3.5px 3.5px at 325px 380px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 75px 430px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.4px 2.4px at 165px 470px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 275px 500px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 365px 540px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 35px 590px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 135px 630px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 245px 670px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(2.8px 2.8px at 335px 720px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 85px 760px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 225px 800px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 315px 840px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(3.5px 3.5px at 55px 880px, #ffffff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 380px 440px;
+  animation: galaxyDrift 22s linear infinite;
+  opacity: .95;
+}
+.galaxy-layer.stars2{
+  background-image: 
+    radial-gradient(2.2px 2.2px at 20px 50px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 80px 20px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(3.2px 3.2px at 150px 90px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 220px 180px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 290px 60px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(2.2px 2.2px at 360px 140px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 70px 220px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 190px 270px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 270px 350px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 350px 300px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 110px 390px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(3.2px 3.2px at 190px 440px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 290px 490px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 50px 520px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.2px 2.2px at 150px 570px, #00f0ff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 240px 620px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 320px 680px, #ffbd00, rgba(0,0,0,0)),
+    radial-gradient(2.8px 2.8px at 90px 730px, #e0b0ff, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 170px 790px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(3.2px 3.2px at 270px 830px, #00f0ff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 340px 410px;
+  animation: galaxyDrift 30s linear infinite reverse, galaxyTwinkle 3.5s ease-in-out infinite alternate;
+  opacity: .9;
+}
+@keyframes galaxyDrift{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-440px)}
+}
+@keyframes galaxyTwinkle{
+  0%{opacity:.5}
+  50%{opacity:1}
+  100%{opacity:.65}
+}
+#galaxyCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:2;
+}
+.splash-content{
+  position:relative;
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 .splash-sphere-wrap{
   position:relative;
@@ -525,37 +615,49 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
   top:0;left:0;height:100%;
   width:0%;
   background:linear-gradient(90deg, var(--cyan), var(--gold));
-  animation:splashProgress 4s linear forwards;
+  animation:splashProgress 3.5s linear forwards;
 }
 @keyframes splashProgress{
   0%{width:0%}
   100%{width:100%}
 }
 .splash-hint{
-  margin-top:16px;
+  margin-top:14px;
   font-size:11px;
   color:var(--dim);
+}
+.splash-tap-hint{
+  margin-top:8px;
+  font-size:10px;
+  color:rgba(255,255,255,.45);
+  letter-spacing:.5px;
 }
 </style>
 </head>
 <body>
 
-<!-- SPLASH SCREEN EKRANI (MİNİMUM 4 SANİYE GÖRÜNÜR) -->
-<div id="splashScreen">
-  <div class="splash-sphere-wrap">
-    <div class="splash-ring"></div>
-    <div class="splash-ball">
-      <div class="splash-center">
-        <span>88</span>
+<!-- SPLASH SCREEN EKRANI (HAREKETLİ GALAKSİ ANİMASYONLU) -->
+<div id="splashScreen" onclick="dismissSplash()" title="Geçmek için dokunun">
+  <div class="galaxy-layer stars1"></div>
+  <div class="galaxy-layer stars2"></div>
+  <canvas id="galaxyCanvas"></canvas>
+  <div class="splash-content">
+    <div class="splash-sphere-wrap">
+      <div class="splash-ring"></div>
+      <div class="splash-ball">
+        <div class="splash-center">
+          <span>88</span>
+        </div>
       </div>
     </div>
+    <div class="splash-title">ASTRA <b>TOMBALA</b></div>
+    <div class="splash-sub">WIFI LIVE SYNC · MULTI-CARD OS</div>
+    <div class="splash-bar">
+      <div class="splash-progress"></div>
+    </div>
+    <div class="splash-hint" id="splashHint">Kozmik salonlar ve kartlar yükleniyor...</div>
+    <div class="splash-tap-hint">Geçmek için ekrana dokunun ✕</div>
   </div>
-  <div class="splash-title">ASTRA <b>TOMBALA</b></div>
-  <div class="splash-sub">WIFI LIVE SYNC · MULTI-CARD OS</div>
-  <div class="splash-bar">
-    <div class="splash-progress"></div>
-  </div>
-  <div class="splash-hint" id="splashHint">Sistem ve salonlar hazırlanıyor... (4 sn)</div>
 </div>
 
 <!-- TAM EKRAN HEDEFE 1 VAR KRİTİK UYARISI -->
@@ -1240,21 +1342,115 @@ function ownerIcon(c){
 }
 function colOf(n){ return n<10?0 : n>=80?8 : Math.floor(n/10); }
 
-/* SPLASH SCREEN (MİNİMUM 4 SANİYE GÖRÜNÜRLÜK) */
+/* ============ SPLASH SCREEN & KOZMİK GALAKSİ MOTORU ============ */
 let splashDismissed = false;
-const MIN_SPLASH_TIME = 4000;
-setTimeout(()=>{
+let galaxyAnimId = null;
+
+function dismissSplash(){
   if(splashDismissed) return;
   splashDismissed = true;
   const sp = document.getElementById('splashScreen');
   if(sp){
     sp.classList.add('hide');
+    if(galaxyAnimId) cancelAnimationFrame(galaxyAnimId);
     setTimeout(()=>{
-      sp.remove();
-      openVenueModal();
+      try { sp.remove(); } catch(e){}
     }, 450);
   }
-}, MIN_SPLASH_TIME);
+}
+
+// 3.5 saniye sonra veya ekrana dokunulduğunda otomatik kapanır (takılma engellendi)
+setTimeout(dismissSplash, 3500);
+
+(function initGalaxyCanvas(){
+  const canvas = document.getElementById('galaxyCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth || 412;
+  let h = canvas.height = window.innerHeight || 915;
+  
+  function resize(){
+    w = canvas.width = window.innerWidth || 412;
+    h = canvas.height = window.innerHeight || 915;
+  }
+  window.addEventListener('resize', resize);
+
+  const starCount = 240;
+  const stars = [];
+  const palette = ['#ffffff', '#00f0ff', '#ffbd00', '#e0b0ff', '#67e8f9', '#fef08a', '#ffffff'];
+
+  for(let i = 0; i < starCount; i++){
+    stars.push({
+      x: (Math.random() - 0.5) * w * 1.5,
+      y: (Math.random() - 0.5) * h * 1.5,
+      z: Math.random() * w + 10,
+      sz: Math.random() * 2.4 + 0.8,
+      color: palette[Math.floor(Math.random() * palette.length)],
+      twinkle: Math.random() * Math.PI * 2,
+      speed: Math.random() * 1.2 + 0.4
+    });
+  }
+
+  function renderGalaxy(){
+    if(splashDismissed) return;
+    
+    // Koyu uzay ve hafif kozmik nebula zemin
+    ctx.fillStyle = '#030712';
+    ctx.fillRect(0, 0, w, h);
+
+    // Kozmik derinlik nebula ışıltısı
+    const g1 = ctx.createRadialGradient(w*0.5, h*0.42, 20, w*0.5, h*0.42, w*0.85);
+    g1.addColorStop(0, 'rgba(13, 30, 75, 0.45)');
+    g1.addColorStop(0.5, 'rgba(30, 10, 60, 0.25)');
+    g1.addColorStop(1, 'rgba(3, 7, 18, 0)');
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, w, h);
+
+    const cx = w / 2;
+    const cy = h * 0.42;
+
+    for(let i = 0; i < stars.length; i++){
+      const s = stars[i];
+      s.z -= s.speed * 2.4;
+      s.twinkle += 0.06;
+      if(s.z <= 0){
+        s.z = w;
+        s.x = (Math.random() - 0.5) * w * 1.5;
+        s.y = (Math.random() - 0.5) * h * 1.5;
+      }
+
+      const k = 220 / s.z;
+      const px = s.x * k + cx;
+      const py = s.y * k + cy;
+
+      if(px >= 0 && px <= w && py >= 0 && py <= h){
+        const depth = 1 - (s.z / w);
+        const tw = 0.65 + Math.sin(s.twinkle) * 0.35;
+        const alpha = Math.min(1, Math.max(0.25, depth * tw));
+        const rad = Math.max(0.8, s.sz * (0.4 + depth * 0.8));
+        
+        ctx.beginPath();
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = alpha;
+        ctx.arc(px, py, rad, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Parlak yıldızlara ışıltı halkası
+        if(s.sz > 1.8){
+          ctx.beginPath();
+          ctx.arc(px, py, rad * 2.6, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = alpha * 0.35;
+          ctx.fill();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    galaxyAnimId = requestAnimationFrame(renderGalaxy);
+  }
+  // İlk frame'i anında çiz
+  renderGalaxy();
+})();
 
 function openVenueModal(){
   renderVenueList();
