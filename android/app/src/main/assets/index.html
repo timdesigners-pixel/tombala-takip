@@ -355,6 +355,40 @@ body.mode-massive .compact-summary{display:flex}
 .stat .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--cyan)}
 .stat .k{font-size:8px;letter-spacing:1px;color:var(--dim)}
 
+.nearest-stat{
+  background:var(--panel);
+  border:1.5px solid var(--line);
+  border-radius:8px;
+  padding:8px 10px;
+  cursor:pointer;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  color:var(--txt);
+  transition:border-color .15s, background .15s;
+}
+.nearest-stat:hover{
+  border-color:var(--gold);
+  background:var(--panel2);
+}
+.nearest-stat .v{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13.5px;
+  font-weight:800;
+  color:var(--gold);
+  line-height:1.2;
+}
+.nearest-stat .k{
+  font-size:10px;
+  color:var(--dim);
+  margin-top:3px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 .histlist{max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
 .hrow{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:11px}
 .hrow .hn{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold);min-width:26px}
@@ -803,6 +837,16 @@ window.dismissSplash = function(){
       <section>
         <h2>PANO (1–90)</h2>
         <div class="board" id="board"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <button class="stat nearest-stat" id="nearestCounter" onclick="openNearestPreview()" title="En yakın kartı önizle">
+            <div class="v" id="nearestRemaining">—</div>
+            <div class="k" id="nearestLabel">SIRADAKİ HEDEF</div>
+          </button>
+          <button class="stat nearest-stat" id="first21Counter" onclick="openFirst21()" title="İlk 21 Yan Oyunu">
+            <div class="v" id="first21Status">İlk 21 · 2 sayı seç</div>
+            <div class="k" id="first21Detail">0/21 çekiliş · 21 hak kaldı</div>
+          </button>
+        </div>
       </section>
 
       <section>
@@ -2446,14 +2490,73 @@ function checkFirst21(){
     }
   }
 }
-function updateFirst21(){
-  const msg = document.getElementById('first21Message'); if(!msg) return;
-  if(first21.won){
-    msg.innerHTML = `<b style="color:var(--green)">🏆 TEBRİKLER! İLK 21 KAZANDI (+${first21.reward}₺)</b>`;
-  } else if(history.length > 21){
-    msg.innerHTML = `<span style="color:var(--dim)">21 çekiliş tamamlandı. Bu el ilk 21 kapandı.</span>`;
+function nearestCardInfo(){
+  let best = null;
+  cards.filter(c => eligible(c)).forEach(c => {
+    const need = needForTarget(c, TARGET);
+    if(!best || need.miss.length < best.need.miss.length){
+      best = { card: c, need };
+    }
+  });
+  return best;
+}
+
+function renderNearestCounter(){
+  const best = nearestCardInfo();
+  const elRem = document.getElementById('nearestRemaining');
+  const elLbl = document.getElementById('nearestLabel');
+  const btn = document.getElementById('nearestCounter');
+  if(!elRem || !elLbl) return;
+
+  if(best){
+    elRem.textContent = `${best.need.miss.length} sayı kaldı`;
+    elLbl.textContent = `${ownerLabel(best.card)} · Kart ${best.card.no} · ${TLABEL[TARGET]}`;
+    if(btn) btn.disabled = false;
   } else {
-    msg.innerHTML = `<span>İlk 21 için kalan çekiliş hakkı: <b>${Math.max(0, 21 - history.length)}</b></span>`;
+    elRem.textContent = '—';
+    elLbl.textContent = 'Aktif kart yok';
+    if(btn) btn.disabled = true;
+  }
+}
+
+function updateFirst21(){
+  const msg = document.getElementById('first21Message');
+  if(msg){
+    if(first21.won){
+      msg.innerHTML = `<b style="color:var(--green)">🏆 TEBRİKLER! İLK 21 KAZANDI (+${first21.reward}₺)</b>`;
+    } else if(history.length > 21){
+      msg.innerHTML = `<span style="color:var(--dim)">21 çekiliş tamamlandı. Bu el ilk 21 kapandı.</span>`;
+    } else {
+      msg.innerHTML = `<span>İlk 21 için kalan çekiliş hakkı: <b>${Math.max(0, 21 - history.length)}</b></span>`;
+    }
+  }
+
+  // PANO ALTINDAKİ İLK 21 SAYACI (first21Counter)
+  const elStat = document.getElementById('first21Status');
+  const elDet = document.getElementById('first21Detail');
+  if(elStat && elDet){
+    const pickedCount = first21.picks.length;
+    const hits = first21.picks.filter(n => called.has(n));
+    const callsUsed = Math.min(history.length, 21);
+    const leftCalls = 21 - callsUsed;
+
+    if(pickedCount < first21.mode){
+      elStat.textContent = `İlk 21 · ${first21.mode} sayı seç`;
+      elStat.style.color = 'var(--gold)';
+      elDet.textContent = `${callsUsed}/21 çekiliş · ${leftCalls} hak kaldı`;
+    } else if(first21.won){
+      elStat.textContent = `🎉 İLK 21 KAZANDI! (${hits.length}/${first21.mode})`;
+      elStat.style.color = 'var(--green)';
+      elDet.textContent = `${callsUsed}. çekilişte tamamlandı`;
+    } else if(leftCalls === 0){
+      elStat.textContent = `İlk 21 Bitti (${hits.length}/${first21.mode})`;
+      elStat.style.color = 'var(--red)';
+      elDet.textContent = `21 çekiliş tamamlandı`;
+    } else {
+      elStat.textContent = `İlk 21 (${hits.length}/${first21.mode} isabet)`;
+      elStat.style.color = 'var(--gold)';
+      elDet.textContent = `${callsUsed}/21 çekiliş · ${leftCalls} hak kaldı`;
+    }
   }
 }
 
@@ -2531,30 +2634,39 @@ function openWifiModal(){
   document.getElementById('wifiDlg').showModal();
 }
 
+let isWifiClient = false;
+
 function applyWifiPermissions(){
   const boardTabBtn = document.querySelector('button[onclick*="setView(\'board\')"]');
   const cardsTabBtn = document.querySelector('button[onclick*="setView(\'cards\')"]');
   const numIn = document.getElementById('numIn');
   const quickPad = document.querySelector('.quick-pad');
   
-  if(wifiPermission === 'cards_only'){
-    setView('cards');
-    if(boardTabBtn) boardTabBtn.style.display = 'none';
-    if(cardsTabBtn) cardsTabBtn.style.display = '';
-    if(numIn) numIn.disabled = true;
-    if(quickPad) quickPad.style.opacity = '0.35';
-  } else if(wifiPermission === 'board_manage'){
-    setView('board');
-    if(boardTabBtn) boardTabBtn.style.display = '';
-    if(cardsTabBtn) cardsTabBtn.style.display = 'none';
-    if(numIn) numIn.disabled = false;
-    if(quickPad) quickPad.style.opacity = '1';
-  } else {
-    if(boardTabBtn) boardTabBtn.style.display = '';
-    if(cardsTabBtn) cardsTabBtn.style.display = '';
-    if(numIn) numIn.disabled = (wifiPermission === 'readonly');
-    if(quickPad) quickPad.style.opacity = (wifiPermission === 'readonly') ? '0.35' : '1';
+  if(isWifiClient){
+    if(wifiPermission === 'cards_only'){
+      setView('cards');
+      if(boardTabBtn) boardTabBtn.style.display = 'none';
+      if(cardsTabBtn) cardsTabBtn.style.display = '';
+      if(numIn) numIn.disabled = true;
+      if(quickPad) quickPad.style.opacity = '0.35';
+      return;
+    } else if(wifiPermission === 'board_manage'){
+      setView('board');
+      if(boardTabBtn) boardTabBtn.style.display = '';
+      if(cardsTabBtn) cardsTabBtn.style.display = 'none';
+      if(numIn) numIn.disabled = false;
+      if(quickPad) quickPad.style.opacity = '1';
+      return;
+    }
   }
+
+  // Ana cihaz (host) veya genel mod: Her zaman varsayılan veya kullanıcının seçtiği görünüm
+  const savedView = localStorage.getItem('astra-view-mode') || '';
+  setView(savedView);
+  if(boardTabBtn) boardTabBtn.style.display = '';
+  if(cardsTabBtn) cardsTabBtn.style.display = '';
+  if(numIn) numIn.disabled = (isWifiClient && wifiPermission === 'readonly');
+  if(quickPad) quickPad.style.opacity = (isWifiClient && wifiPermission === 'readonly') ? '0.35' : '1';
 }
 
 function setWifiPermission(perm){
@@ -2573,12 +2685,14 @@ function setWifiPermission(perm){
 }
 
 function startWifiHost(){
+  isWifiClient = false;
   document.getElementById('wifiRoleText').textContent = 'Yayıncı (Erişim Noktası)';
   document.getElementById('wifiStatusPill').classList.add('stream');
   document.getElementById('wifiPillText').textContent = 'Wi-Fi Yayında';
   showToast('📡 Wi-Fi Canlı Yayın Başlatıldı (Sınırsız Çoklu Cihaz)', 'info');
 }
 function joinWifiHost(){
+  isWifiClient = true;
   document.getElementById('wifiRoleText').textContent = 'İstemci / Bağlı';
   document.getElementById('wifiPillText').textContent = 'Wi-Fi Bağlı';
   showToast('🔗 Wi-Fi Salona Bağlanıldı', 'info');
@@ -2713,6 +2827,7 @@ function render(){
   document.getElementById('qCount').textContent = called.size;
 
   renderPinnedNear();
+  renderNearestCounter();
   renderWinBar();
   renderProfit();
   updateLead();
@@ -2833,6 +2948,7 @@ function setView(v){
   document.body.classList.remove('view-cards','view-board');
   if(v==='cards') document.body.classList.add('view-cards');
   if(v==='board') document.body.classList.add('view-board');
+  try { localStorage.setItem('astra-view-mode', v || ''); } catch(e){}
   render();
 }
 
