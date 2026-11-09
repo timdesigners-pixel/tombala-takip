@@ -30,3 +30,4 @@
 30: Elle giriş ekranı kullanıldığında uyarı ve bildirimler arkada kalmamalı  .
 31: 1 sayı kaldı uyarısı başka çıkan her rakamla tekrar tetikleniyor tetiklenmemeli. üstte çıkan kırmızı beklenen 1 sayı ve Kart bilgisi çok güzel o  kalmalı korunmalı . Sadece sağında kapatma işareti olmalı. 
 32: Takip edilen arkadaş ile bütçe ortak ise ona göre işaretleyebilinmesi gerekli, ayrıca oyun başında çift el işaretlenebilmeli . 
+33: Kamera aç tuşu kamerayı açmıyor, ocr yerleşik dese de sanırım çalışmıyor
