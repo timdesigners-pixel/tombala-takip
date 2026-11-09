@@ -1221,6 +1221,11 @@ window.dismissSplash = function(){
 /* ============ ASTRA TOMBALA OS ENGINE ============ */
 const PRESET_PRICES = [10, 20, 25, 30, 50, 100, 150, 200, 250];
 
+function escapeHtml(str){
+  if(!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 const defaultPersons = [
   { id: 'p1', name: 'Benim', role: 'me', color: '#00f0ff' },
   { id: 'p2', name: 'Ahmet', role: 'friend', color: '#bd00ff' },
@@ -1265,6 +1270,14 @@ try {
 } catch(e){
   venues = defaultVenues;
 }
+if(!venues || Object.keys(venues).length === 0){
+  venues = defaultVenues;
+}
+for(let vName in defaultVenues){
+  if(!venues[vName] || !venues[vName].cards || venues[vName].cards.length === 0){
+    venues[vName] = JSON.parse(JSON.stringify(defaultVenues[vName]));
+  }
+}
 
 let activeVenue = localStorage.getItem(ACTIVE_VENUE_KEY);
 if(!activeVenue || !venues[activeVenue]){
@@ -1276,7 +1289,13 @@ function loadVenue(name){
   if(!venues[name]) return;
   activeVenue = name;
   localStorage.setItem(ACTIVE_VENUE_KEY, activeVenue);
-  cards = JSON.parse(JSON.stringify(venues[activeVenue].cards || []));
+  let vCards = venues[activeVenue].cards;
+  if(!vCards || vCards.length === 0){
+    vCards = (defaultVenues[activeVenue] && defaultVenues[activeVenue].cards) || defaultVenues["Yıldız Tombala Salonu"].cards;
+    venues[activeVenue].cards = vCards;
+    saveVenues();
+  }
+  cards = JSON.parse(JSON.stringify(vCards));
   persons = JSON.parse(JSON.stringify(venues[activeVenue].persons || defaultPersons));
   updateVenueUI();
   called.clear(); history=[]; lastMark=null;
@@ -1373,8 +1392,9 @@ setTimeout(dismissSplash, 3500);
 
 (function initGalaxyCanvas(){
   const canvas = document.getElementById('galaxyCanvas');
-  if(!canvas) return;
+  if(!canvas || !canvas.getContext) return;
   const ctx = canvas.getContext('2d');
+  if(!ctx) return;
   let w = canvas.width = window.innerWidth || 412;
   let h = canvas.height = window.innerHeight || 915;
   
