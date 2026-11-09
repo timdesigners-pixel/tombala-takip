@@ -272,7 +272,33 @@ h2{font-size:9.5px;letter-spacing:1.8px;color:var(--dim);text-transform:uppercas
 .card.near2{box-shadow:0 0 0 1px var(--gold),0 0 18px rgba(255,189,0,.35)}
 
 .card-head{display:flex;align-items:center;gap:4px;flex-wrap:wrap;border-radius:6px;padding:4px 7px;margin:-3px -3px 6px}
-.card-no{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--gold);font-size:14.5px}
+.card-no{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--gold);font-size:14.5px;transition:transform .2s}
+@keyframes cardHitBlink{
+  0%,100%{color:var(--gold);text-shadow:none;transform:scale(1)}
+  25%{color:#fff;text-shadow:0 0 12px #ffbd00,0 0 22px #ffbd00;transform:scale(1.18);background:rgba(255,189,0,.35);border-radius:4px}
+  50%{color:var(--gold);text-shadow:0 0 4px #ffbd00;transform:scale(1);background:transparent}
+  75%{color:#fff;text-shadow:0 0 12px #00f0ff,0 0 22px #00f0ff;transform:scale(1.18);background:rgba(0,240,255,.35);border-radius:4px}
+}
+.card-no.blink-hit{animation:cardHitBlink 1.4s ease-in-out infinite;display:inline-block;padding:0 3px}
+
+.card-owner-select{
+  font-family:inherit;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:5px;
+  background:rgba(15,23,42,.85);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  cursor:pointer;
+  outline:none;
+  max-width:125px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.card-owner-select:hover,.card-owner-select:focus{border-color:var(--cyan);box-shadow:0 0 6px rgba(0,240,255,.4)}
+.card-owner-select option{background:#0b1120;color:#fff;font-size:11px}
+
 .card-person{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);display:inline-flex;align-items:center;gap:3px;cursor:pointer}
 .ownchip{font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;cursor:pointer;border:1px solid}
 .ownchip.me{background:rgba(0,240,255,.18);color:#00f0ff;border-color:rgba(0,240,255,.55)}
@@ -295,7 +321,13 @@ h2{font-size:9.5px;letter-spacing:1.8px;color:var(--dim);text-transform:uppercas
 .cell:active{transform:scale(.92)}
 .cell.blank{background:var(--card-bg,rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);opacity:.65;cursor:default}
 .cell.hit{background:linear-gradient(135deg,#5a4607,#8c6d0b);border-color:var(--gold);color:#fff;box-shadow:inset 0 0 8px rgba(255,189,0,.35)}
-.cell.justhit{animation:justhitpop .5s ease-out}
+.cell.viewer-hit{background:linear-gradient(135deg,#1e3a8a,#2563eb);border-color:#60a5fa;color:#fff;box-shadow:0 0 8px rgba(96,165,250,.45)}
+@keyframes cellLandAnim{
+  0%{transform:scale(2.2) translateY(-14px);background:#ffbd00;color:#0b1120;box-shadow:0 0 25px #ffbd00;opacity:0}
+  50%{transform:scale(1.25);box-shadow:0 0 18px var(--cyan);opacity:1}
+  100%{transform:scale(1) translateY(0);opacity:1}
+}
+.cell.justhit{animation:cellLandAnim .75s cubic-bezier(0.175,0.885,0.32,1.275);z-index:2;position:relative}
 @keyframes justhitpop{0%{transform:scale(.55);box-shadow:0 0 0 0 rgba(34,224,122,.7)}60%{transform:scale(1.18)}100%{transform:scale(1);box-shadow:0 0 0 8px rgba(34,224,122,0)}}
 
 .need{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap;align-items:center}
@@ -914,12 +946,24 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
       </label>
       <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
         <input type="radio" name="wifiPerm" value="readonly" id="permReadonly" onchange="setWifiPermission('readonly')">
-        <span><b>Salt Okunur (İzleyici):</b> Sadece çekilen sayıları ve kartları canlı takip eder</span>
+        <span><b>Salt Okunur (İzleyici):</b> Canlı takip eder, takipçi olarak kendi kartını işaretleyebilir</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+        <input type="radio" name="wifiPerm" value="cards_only" id="permCardsOnly" onchange="setWifiPermission('cards_only')">
+        <span><b>Sadece Kartları İzleme (Pano Gizli):</b> Pano gizlenir, yalnızca kartlar ve takipçi işaretlemesi aktiftir</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+        <input type="radio" name="wifiPerm" value="board_manage" id="permBoardManage" onchange="setWifiPermission('board_manage')">
+        <span><b>Sadece Pano &amp; Düzenleme (Kartlar Gizli):</b> Kartlar gizlenir, yalnızca pano görüntülenir ve düzenlenir</span>
       </label>
       <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
         <input type="radio" name="wifiPerm" value="camera" id="permCamera" onchange="setWifiPermission('camera')">
         <span><b>Sadece Kamera Yayını:</b> İkincil cihaz sadece pano görüntüsü ve OCR aktarır</span>
       </label>
+    </div>
+    <div style="margin-top:8px;padding:6px 8px;background:rgba(0,240,255,0.08);border:1px dashed var(--cyan);border-radius:6px;font-size:11px;color:var(--cyan);display:flex;align-items:center;gap:6px">
+      <span>👥</span>
+      <span><b>Çoklu Takipçi &amp; 3+ Bağlantı Desteği:</b> Sınırsız sayıda telefon ve tablet aynı anda salona bağlanabilir.</span>
     </div>
   </div>
 
@@ -1150,6 +1194,7 @@ let gameMode = 'standard'; // 'standard' | 'massive'
 let friendCarousel = false;
 let ownerFilter = 'split'; // 'split' | 'me' | 'friend'
 let called = new Set(), history = [], callTimes = [], annLog = [], winLog = [];
+let viewerMarks = new Set(); // Takipçi yerel işaretlemeleri
 let deletedCards = [];
 let announced = {};
 let TARGET = 'c1';
@@ -1486,8 +1531,8 @@ function checkNear(){
 
 /* NUMARA ÇAĞIRMA & AKILLI GERİ ALMA */
 function callNumber(n, silent){
-  if(wifiPermission === 'readonly'){
-    showToast('Bu cihaz salt okunur modda, sayı girişi yetkiniz yok', 'warn');
+  if(wifiPermission === 'readonly' || wifiPermission === 'cards_only'){
+    showToast('Bu cihaz izleme modunda, sayı girişi yetkiniz yok', 'warn');
     return;
   }
   if(n<1 || n>90) return;
@@ -1527,8 +1572,8 @@ function callNumber(n, silent){
 }
 
 function uncall(n, force){
-  if(wifiPermission === 'readonly'){
-    showToast('Salt okunur moddasınız, geri alma yetkiniz yok', 'warn');
+  if(wifiPermission === 'readonly' || wifiPermission === 'cards_only'){
+    showToast('Bu cihaz izleme modunda, geri alma yetkiniz yok', 'warn');
     return;
   }
   if(!called.has(n)) return;
@@ -1875,14 +1920,24 @@ function buildCardElement(c, ci){
   div.className = 'card' + (cnt===3?' tombala':cnt===2?' cinko2':cnt===1?' cinko1':'') + glow + (elig?'':' nopr');
   if(c.color) div.style.setProperty('--card-bg', c.color);
   
-  const ownCls = c.owner==='friend' ? 'friend' : 'me';
-  const person = persons.find(x=>x.id===c.personId);
-  const pName = person ? person.name : (c.owner==='friend'?'Arkadaş':'Benim');
+  // Madde 22: Çekilen son sayı bu karttaysa kart numarası dikkat çekici şekilde yanıp söner
+  const isHitByLast = lastMark !== null && allCardNums(c).includes(lastMark);
+  const blinkClass = isHitByLast ? ' blink-hit' : '';
+
+  // Madde 23: İki ayrı buton yerine tek kompakt açılır liste (dropdown)
+  const ownerOptions = persons.map(p => `
+    <option value="${p.id}" ${c.personId === p.id ? 'selected' : ''}>
+      ${p.role === 'friend' ? '👉' : '👤'} ${escapeHtml(p.name)} (${p.role === 'friend' ? 'Arkadaş' : 'Benim'})
+    </option>
+  `).join('') + `
+    <option value="__new_person__">➕ Kişi Ekle / Yönet...</option>
+  `;
 
   div.innerHTML = `<div class="card-head" ${c.color?`style="background:${c.color};color:#fff"`:''}>
-    <span class="card-no">KART ${c.no}</span>
-    <span class="card-person" onclick="openCardEdit(${ci})">👤 ${pName}</span>
-    <span class="ownchip ${ownCls}" onclick="quickToggleOwner(${ci})">${ownerIcon(c)}</span>
+    <span class="card-no${blinkClass}">KART ${c.no}</span>
+    <select class="card-owner-select" onchange="changeCardOwnerDirect(${ci}, this.value)" onclick="event.stopPropagation()">
+      ${ownerOptions}
+    </select>
     <span class="pricechip" onclick="openCardPriceEdit(${ci})">${c.price||20}₺</span>
     <span class="badge b1 ${cnt>=1?'show':''}">1. ÇİNKO</span>
     <span class="badge b2 ${cnt>=2?'show':''}">2. ÇİNKO</span>
@@ -1915,11 +1970,26 @@ function buildCardElement(c, ci){
     for(let col=0; col<9; col++){
       const n = c.rows[r][col];
       const cell = document.createElement('div');
-      cell.className = 'cell' + (n===null ? ' blank' : (called.has(n) ? ' hit' : ''));
-      if(n === lastMark && called.has(n)) cell.classList.add('justhit');
+      const isCalled = called.has(n);
+      const isViewerMarked = viewerMarks.has(n);
+      cell.className = 'cell' + (n===null ? ' blank' : (isCalled ? ' hit' : (isViewerMarked ? ' viewer-hit' : '')));
+      if(n === lastMark && isCalled) cell.classList.add('justhit');
       cell.textContent = n || '';
       if(n!==null){
-        cell.onclick = ()=> called.has(n) ? uncall(n) : callNumber(n);
+        cell.onclick = ()=>{
+          if(wifiPermission === 'readonly' || wifiPermission === 'cards_only'){
+            // Takipçi yerel işaretleme (canlı yayını izlerken kendi kartını kontrol edebilir)
+            if(viewerMarks.has(n)){
+              viewerMarks.delete(n);
+            } else {
+              viewerMarks.add(n);
+            }
+            vibrate(25);
+            render();
+            return;
+          }
+          called.has(n) ? uncall(n) : callNumber(n);
+        };
       }
       rowDiv.appendChild(cell);
     }
@@ -1933,6 +2003,26 @@ function buildCardElement(c, ci){
       needForTarget(c, TARGET).miss.map(num=>`<span class="nchip" onclick="callNumber(${num})">${num}</span>`).join('');
     div.appendChild(needDiv);
   }
+
+  return div;
+}
+
+function changeCardOwnerDirect(ci, val){
+  if(val === '__new_person__'){
+    openPersonManage();
+    render();
+    return;
+  }
+  const p = persons.find(x => x.id === val);
+  if(p && cards[ci]){
+    cards[ci].personId = p.id;
+    cards[ci].owner = p.role;
+    saveVenues();
+    render();
+    triggerWifiBroadcast();
+    showToast(`Kart ${cards[ci].no} sahibi: ${p.name} (${p.role==='friend'?'Arkadaş':'Benim'})`, 'info');
+  }
+}
 
   return div;
 }
@@ -2206,26 +2296,65 @@ function processCameraFeed(){
 function openWifiModal(){
   const rFull = document.getElementById('permFull');
   const rRo = document.getElementById('permReadonly');
+  const rCards = document.getElementById('permCardsOnly');
+  const rBoard = document.getElementById('permBoardManage');
   const rCam = document.getElementById('permCamera');
+  
   if(wifiPermission === 'readonly' && rRo) rRo.checked = true;
+  else if(wifiPermission === 'cards_only' && rCards) rCards.checked = true;
+  else if(wifiPermission === 'board_manage' && rBoard) rBoard.checked = true;
   else if(wifiPermission === 'camera' && rCam) rCam.checked = true;
   else if(rFull) rFull.checked = true;
   
   document.getElementById('wifiDlg').showModal();
 }
 
+function applyWifiPermissions(){
+  const boardTabBtn = document.querySelector('button[onclick*="setView(\'board\')"]');
+  const cardsTabBtn = document.querySelector('button[onclick*="setView(\'cards\')"]');
+  const numIn = document.getElementById('numIn');
+  const quickPad = document.querySelector('.quick-pad');
+  
+  if(wifiPermission === 'cards_only'){
+    setView('cards');
+    if(boardTabBtn) boardTabBtn.style.display = 'none';
+    if(cardsTabBtn) cardsTabBtn.style.display = '';
+    if(numIn) numIn.disabled = true;
+    if(quickPad) quickPad.style.opacity = '0.35';
+  } else if(wifiPermission === 'board_manage'){
+    setView('board');
+    if(boardTabBtn) boardTabBtn.style.display = '';
+    if(cardsTabBtn) cardsTabBtn.style.display = 'none';
+    if(numIn) numIn.disabled = false;
+    if(quickPad) quickPad.style.opacity = '1';
+  } else {
+    if(boardTabBtn) boardTabBtn.style.display = '';
+    if(cardsTabBtn) cardsTabBtn.style.display = '';
+    if(numIn) numIn.disabled = (wifiPermission === 'readonly');
+    if(quickPad) quickPad.style.opacity = (wifiPermission === 'readonly') ? '0.35' : '1';
+  }
+}
+
 function setWifiPermission(perm){
   wifiPermission = perm;
   localStorage.setItem('astra-wifi-perm', perm);
+  applyWifiPermissions();
   triggerWifiBroadcast();
-  showToast(`Wi-Fi İzin Seviyesi: ${perm==='readonly'?'Salt Okunur (İzleyici)':perm==='camera'?'Kamera Yayını':'Tam Yetki'}`, 'info');
+  const labelMap = {
+    full: 'Tam Yetki (Ortak Kontrol)',
+    readonly: 'Salt Okunur (İzleyici)',
+    cards_only: 'Sadece Kartları İzleme (Pano Gizli)',
+    board_manage: 'Sadece Pano & Düzenleme (Kartlar Gizli)',
+    camera: 'Sadece Kamera Yayını'
+  };
+  showToast(`Wi-Fi İzin Seviyesi: ${labelMap[perm] || perm}`, 'info');
 }
 
 function startWifiHost(){
   document.getElementById('wifiRoleText').textContent = 'Yayıncı (Erişim Noktası)';
   document.getElementById('wifiStatusPill').classList.add('stream');
   document.getElementById('wifiPillText').textContent = 'Wi-Fi Yayında';
-  showToast('📡 Wi-Fi Canlı Yayın Başlatıldı', 'info');
+  showToast('📡 Wi-Fi Canlı Yayın Başlatıldı (Sınırsız Çoklu Cihaz)', 'info');
 }
 function joinWifiHost(){
   document.getElementById('wifiRoleText').textContent = 'İstemci / Bağlı';
@@ -2261,7 +2390,10 @@ try {
         history = snap.history || history;
         if(snap.target) TARGET = snap.target;
         if(snap.extFlags) extFlags = snap.extFlags;
-        if(snap.permission) wifiPermission = snap.permission;
+        if(snap.permission){
+          wifiPermission = snap.permission;
+          applyWifiPermissions();
+        }
         lastMark = history.length ? history[history.length-1] : null;
         document.getElementById('lastNum').textContent = lastMark || '—';
         recalc();
@@ -2618,6 +2750,7 @@ document.getElementById('tAlt').onclick = ()=>{ document.body.classList.toggle('
 // BAŞLANGIÇ YÜKLEMESİ
 loadVenue(activeVenue);
 applyCardsCols();
+applyWifiPermissions();
 updateMicVisibilityUI();
 render();
 renderHist();
