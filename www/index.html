@@ -635,6 +635,15 @@ dialog h2{color:var(--txt);font-size:15px;margin-bottom:8px}
 </style>
 </head>
 <body>
+<script>
+window.dismissSplash = function(){
+  const sp = document.getElementById('splashScreen');
+  if(sp && !sp.classList.contains('hide')){
+    sp.classList.add('hide');
+    setTimeout(function(){ try{ sp.remove(); }catch(e){} }, 450);
+  }
+};
+</script>
 
 <!-- SPLASH SCREEN EKRANI (HAREKETLİ GALAKSİ ANİMASYONLU) -->
 <div id="splashScreen" onclick="dismissSplash()" title="Geçmek için dokunun">
@@ -2218,9 +2227,6 @@ function changeCardOwnerDirect(ci, val){
     triggerWifiBroadcast();
     showToast(`Kart ${cards[ci].no} sahibi: ${p.name} (${p.role==='friend'?'Arkadaş':'Benim'})`, 'info');
   }
-}
-
-  return div;
 }
 
 function quickToggleOwner(idx){
