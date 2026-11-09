@@ -28,3 +28,4 @@
 28: Sıradaki hedefe ulaşılmışsa 1 sayı kaldı benzeri büyük flaş uyarı, konfeti ile ekrana gelmeli ve kartın önizlemesi devam et butonuna tıklayana kadar ekranda kalmalıdır. Aynı anda birden fazla kartın hedef yapması halinde alt alta gösterilmelidir önizlemeleri.
 29: Arkadaş karoussel aktif edilince görünüm hatalı şekilde yatay taşıyor , yatayda taşma ve  kayma kesinlikle olmamalı.
 30: Elle giriş ekranı kullanıldığında uyarı ve bildirimler arkada kalmamalı  .
+31: 1 sayı kaldı uyarısı başka çıkan her rakamla tekrar tetikleniyor tetiklenmemeli. üstte çıkan kırmızı beklenen 1 sayı ve Kart bilgisi çok güzel o  kalmalı korunmalı . 
